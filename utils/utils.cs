@@ -1,37 +1,32 @@
-namespace tempest;
 using System.Text.Json;
+namespace tempest;
 
 public class Replay {
-  private int port = 2999;
-  private string url = $"https://127.0.0.1:{port}/replay/playback";
-  private HttpClient client = new HttpClient();
+  private string url = $"https://127.0.0.1:2999/replay/playback";
+  public async Task<string> getPosition() {
+    HttpClientHandler clientHandler = new HttpClientHandler();
+    clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
+    HttpClient client = new HttpClient(clientHandler);
 
-  private async Task<HttpResponseMessage> getPosition(){
     var result = await client.GetAsync(url);
-    Console.WriteLine(result.StatusCode);
-    return result;
+    var response = await result.Content.ReadAsStringAsync();
+    Console.WriteLine($"Get result {response}");
+    return response;
   }
 
   /// <param name='seconds'>time position in seconds<param>
-  private async Task<HttpResponseMessage> setPosition(int seconds){
-    var values = new Dictionary<string, string>{{ "time", seconds.ToString() }};
-    var content = new FormUrlEncodedContent(values);
+  public async Task<string> setPosition(int seconds) {
+    HttpClientHandler clientHandler = new HttpClientHandler();
+    clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
+    HttpClient client = new HttpClient(clientHandler);
 
-    using var result = await client.PostAsync(url, content);
-    Console.WriteLine(result.StatusCode);
-    return result;
-  }
-}
+    var values = new Dictionary<string, int>{{ "time", seconds }};
+    var json = JsonSerializer.Serialize(values);
+    var stringContent = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
 
-public class JsonManager {
-  public static void readJson(){
-
-  }
-  public static void writeJson(){
-    using (StreamReader r = new StreamReader("data.json"))
-    {
-        string json = r.ReadToEnd();
-        source = JsonSerializer.Deserialize<List<Person>>(json);
-    }
+    var result = await client.PostAsync(url, stringContent);
+    var response = await result.Content.ReadAsStringAsync();
+    Console.WriteLine($"Post result {response}");
+    return response;
   }
 }
