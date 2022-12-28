@@ -30,3 +30,47 @@ public class Replay {
     return response;
   }
 }
+
+public class LeaguePaths { 
+
+    public static List<string> GetPaths() {
+        DriveInfo[] drives = DriveInfo.GetDrives();
+        List<string> directories = new List<string>();
+
+        for (int i = 0; i < drives.Length; i++) {
+            directories.AddRange(GetDirectories(drives[i].ToString()));
+        }
+
+        return directories;
+    }
+
+    private static List<string> GetDirectories(string path, string searchPattern = "*",
+        SearchOption searchOption = SearchOption.AllDirectories) {
+        List<string> directories = new List<string>(GetDirectoriesSafe(path, searchPattern));
+
+        for (int i = 0; i < directories.Count; i++) {
+            if (directories[i].Contains("Riot Games")) {
+                return Directory.GetFiles(directories[i], "League of Legends.exe", SearchOption.AllDirectories).ToList();
+            }
+        }
+
+        for (int i = 0; i < directories.Count; i++) {
+            List<string> data = GetDirectoriesSafe(directories[i], searchPattern);
+            for (int u = 0; u < data.Count; u++) {
+                if (data[u].Contains("Riot Games") && !data[u].Contains("Riot Games\\")) {
+                    return Directory.GetFiles(data[u], "League of Legends.exe", SearchOption.AllDirectories).ToList();
+                }
+            }
+        }
+        return new List<string>();
+    }
+
+    private static List<string> GetDirectoriesSafe(string path, string searchPattern) {
+        try {
+            return Directory.GetDirectories(path, searchPattern).ToList();
+        }
+        catch (UnauthorizedAccessException) {
+            return new List<string>();
+        }
+    }
+}
