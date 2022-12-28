@@ -1,4 +1,6 @@
 using System.Text.Json;
+using System.Diagnostics;
+using System.Text;
 namespace tempest;
 
 public class Replay {
@@ -71,6 +73,55 @@ public class LeaguePaths {
         }
         catch (UnauthorizedAccessException) {
             return new List<string>();
+        }
+    }
+}
+
+public class ROFLHandler {
+    public static void OpenROFL(string roflPath) {
+
+        string roflVersion = GetROFLVersion(roflPath);
+
+        // TODO: Loop through all possible League.exe's in the settings.json file and compare their versions to the rofl's version
+        var versionInfo = FileVersionInfo.GetVersionInfo(@"C:\Riot Games\League of Legends\Game\League of Legends.exe");
+        string version = versionInfo.FileVersion ?? throw new ArgumentException();
+        string parsedLeagueVersion = $"{version.Split(".")[0]}.{version.Split(".")[1]}";
+
+        if (roflVersion != parsedLeagueVersion) {
+            Console.WriteLine("Incorrect rofl version");
+            return;
+        } 
+
+        try {
+            using (Process process = new Process()) {
+                process.StartInfo.WorkingDirectory = @"C:\Riot Games\League of Legends\Game";
+                process.StartInfo.FileName = @"C:\Riot Games\League of Legends\Game\League of Legends.exe";
+                process.StartInfo.Arguments = @$"""{roflPath}""";
+                process.Start();
+                // process.WaitForExit();
+            }
+        }
+        catch (Exception e) {
+            Console.WriteLine(e);
+        }
+    }
+
+    private static string GetROFLVersion(string path) {
+        using (FileStream fs  = File.OpenRead(path)) {
+            byte[] b = new byte[1024];
+            UTF8Encoding temp = new UTF8Encoding(true);
+
+            fs.Read(b, 0, b.Length);
+            string[] parsedData = temp.GetString(b).Split(",");
+            string gameVersion = "";
+
+            for (int i = 0; i < parsedData.Length; i++) {
+                if (parsedData[i].Contains("gameVersion")) {
+                    gameVersion = parsedData[i].Split(":")[1].Split(@"""")[1];
+                }
+            }
+
+            return $"{gameVersion.Split(".")[0]}.{gameVersion.Split(".")[1]}";
         }
     }
 }
