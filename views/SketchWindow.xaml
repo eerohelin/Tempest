@@ -5,8 +5,19 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Tempest"
         mc:Ignorable="d"
+        AllowsTransparency="True"
+        WindowStyle="None"
+        WindowState="Maximized"
+        Topmost="True"
+        MouseDown="OnMouseDown"
+        MouseUp="OnMouseUp"
+        MouseMove="OnMouseMove"
+        PreviewKeyDown="OnKeyDown"
         Title="SketchWindow" Height="450" Width="800">
-    <Grid>
+    <Window.Background >
+        <SolidColorBrush Opacity="0.002" Color="Black" />
+    </Window.Background>
+    <Canvas x:Name="sketchCanvas">
         
-    </Grid>
+    </Canvas>
 </Window>

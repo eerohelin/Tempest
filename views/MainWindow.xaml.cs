@@ -24,6 +24,13 @@ namespace Tempest
         public MainWindow()
         {
             InitializeComponent();
+
+            Closed += MainWindow_Closed;
+        }
+
+        private void MainWindow_Closed(object? sender, EventArgs e)
+        {
+            Owner.Close();
         }
     }
 }
