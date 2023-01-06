@@ -1,5 +1,6 @@
-.vscode
+﻿obj
 
 bin
 
-obj
+.vs
+
