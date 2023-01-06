@@ -9,7 +9,7 @@ using System.Text;
 using System.IO;
 using System.Net.Http;
 
-namespace Tempest.utils
+namespace Tempest.Utils
 {
     public class Replay
     {
