@@ -14,5 +14,6 @@ namespace Tempest.utils
     {
         public static Color brushColor = Color.FromRgb(255,255,255);
         public static MapImage mapImage = new();
+        public static int tool = 1;
     }
 }

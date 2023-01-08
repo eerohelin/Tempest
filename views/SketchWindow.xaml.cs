@@ -94,6 +94,8 @@ namespace Tempest
 
             myPolyLine.Points = new PointCollection(points);
 
+            myPolyLine.MouseEnter += (x, y) => { PolyLineHover(x, y, myPolyLine); };
+
             sketchCanvas.Children.Add(myPolyLine);
             lines.Add(myPolyLine);
 
@@ -109,7 +111,7 @@ namespace Tempest
         private void OnMouseMove(object sender, MouseEventArgs e)
         {
             //return;
-            if (e.LeftButton == MouseButtonState.Pressed)
+            if (e.LeftButton == MouseButtonState.Pressed && Services.tool == 1)
             {
                 Line line = new();
 
@@ -134,7 +136,7 @@ namespace Tempest
         {
             if (e.Key == Key.Z && Keyboard.IsKeyDown(Key.LeftCtrl))
             {
-                // Undo
+                Services.tool = 2;
             }
             if (e.Key == Key.X) // Map image testing shortcuts
             {
@@ -143,6 +145,15 @@ namespace Tempest
             if (e.Key == Key.C)
             {
                 Services.mapImage._Opacity = 1;
+            }
+        }
+
+        private void PolyLineHover(object sender, MouseEventArgs e, Polyline polyline)
+        {
+            if (Services.tool == 2 && e.LeftButton == MouseButtonState.Pressed)
+            {
+                sketchCanvas.Children.Remove(polyline);
+                lines.Remove(polyline);
             }
         }
 
