@@ -13,10 +13,6 @@ namespace Tempest.utils
     internal class Services
     {
         public static Color brushColor = Color.FromRgb(255,255,255);
-        public static Image mapImage = new()
-        {
-            Source = new BitmapImage(new Uri(@"/assets/lol_map.png", UriKind.Relative)),
-            Opacity = 0,
-        };
+        public static MapImage mapImage = new();
     }
 }

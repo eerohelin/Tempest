@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Xml.Linq;
 using Tempest.utils;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Tempest
 {
@@ -45,6 +46,8 @@ namespace Tempest
             };
             mainWindow.Show();
             Create_Map();
+
+            Create_Player("T");
         }
 
         private void Create_Map()
@@ -57,6 +60,22 @@ namespace Tempest
             Canvas.SetTop(Services.mapImage, 25);
             Panel.SetZIndex(Services.mapImage, 0);
             sketchCanvas.Children.Add(Services.mapImage);
+        }
+
+        private Player Create_Player(string role)
+        {
+            Player player = new(role)
+            {
+                Width = 30,
+                Height = 30,
+                canvas = sketchCanvas,
+                Background = Brushes.Red,
+                CornerRadius = new CornerRadius(50),
+            };
+            Canvas.SetLeft(player, 500);
+            Canvas.SetTop(player, 500);
+            sketchCanvas.Children.Add(player);
+            return player;
         }
 
         private void OnMouseDown(object sender, MouseButtonEventArgs e)
@@ -89,6 +108,7 @@ namespace Tempest
 
         private void OnMouseMove(object sender, MouseEventArgs e)
         {
+            //return;
             if (e.LeftButton == MouseButtonState.Pressed)
             {
                 Line line = new();
@@ -118,12 +138,13 @@ namespace Tempest
             }
             if (e.Key == Key.X) // Map image testing shortcuts
             {
-                Services.mapImage.Opacity = 0;
+                Services.mapImage._Opacity = 0;
             }
             if (e.Key == Key.C)
             {
-                Services.mapImage.Opacity = 1;
+                Services.mapImage._Opacity = 1;
             }
         }
+
     }
 }
