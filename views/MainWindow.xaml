@@ -3,11 +3,108 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Tempest"
         mc:Ignorable="d"
+        WindowStyle="None"
+        WindowStartupLocation="Manual"
+        Left="1685"
+        Top="10"
         Topmost="True"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="MainWindow" Height="600" Width="220"
+        Icon="/assets/icon.png"
+>
+    
+        <WindowChrome.WindowChrome>
+            <WindowChrome CaptionHeight="0"/>
+        </WindowChrome.WindowChrome>
 
+
+    <Grid
+        Background="#1e232b"    
+    >
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <DockPanel
+            Background="Transparent"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Center"
+            MouseDown="appBar_drag"
+            
+        >
+            <Image
+                Source="/assets/icon.png"
+                Width="20"
+                Height="20"
+                Margin="6,5,1,0"
+            >
+            </Image>
+            <TextBlock
+            HorizontalAlignment="Stretch"
+            Text="Tempest"
+            Foreground="WhiteSmoke"
+            FontSize="16"
+            Grid.Column="0"
+            VerticalAlignment="Center"
+            Margin="10,2,0,0"
+        >
+            </TextBlock>
+            <StackPanel
+                Margin="0,0,5,0"
+                Orientation="Horizontal"
+                HorizontalAlignment="Right"
+            >
+                <Button
+                    Width="25"
+                    Height="25"
+                    Background="#181d24"
+                    Foreground="WhiteSmoke"
+                    BorderThickness="0"
+                    Content="--"
+                    x:Name="buttonMinimize"
+                    FontSize="10"
+                    Click="buttonMinimize_Click"
+                    HorizontalAlignment="Right"
+                >
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="30"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+                <Button
+                    Width="25"
+                    Height="25"
+                    Background="#181d24"
+                    Foreground="WhiteSmoke"
+                    BorderThickness="0"
+                    Content="X"
+                    x:Name="buttonClose"
+                    FontSize="10"
+                    Click="buttonClose_click"
+                    HorizontalAlignment="Right"
+                >
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="30"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+            </StackPanel>
+        </DockPanel>
+
+        <Grid
+            Grid.Row="1"
+            Background="#15191f"
+        >
+            
+        </Grid>
     </Grid>
+    
 </Window>
