@@ -15,10 +15,8 @@ namespace Tempest.utils
         public static Color brushColor = Color.FromRgb(255,255,255);
         public static Image mapImage = new()
         {
-            Width = 1000,
-            Height = 1000,
-            //Source = new BitmapImage(new Uri(@"")),
-            Opacity = 0
+            Source = new BitmapImage(new Uri(@"/assets/lol_map.png", UriKind.Relative)),
+            Opacity = 0,
         };
     }
 }

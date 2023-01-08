@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Xml.Linq;
 using Tempest.utils;
 
 namespace Tempest
@@ -43,9 +44,19 @@ namespace Tempest
                 Owner = this
             };
             mainWindow.Show();
+            Create_Map();
+        }
 
-            sketchCanvas.Children.Add(Services.mapImage);
+        private void Create_Map()
+        {
+            Services.mapImage.Width = sketchCanvas.ActualHeight - 50;
+            Services.mapImage.Height = sketchCanvas.ActualHeight - 50;
+
+            double left = sketchCanvas.ActualWidth / 4.4;
+            Canvas.SetLeft(Services.mapImage, left);
+            Canvas.SetTop(Services.mapImage, 25);
             Panel.SetZIndex(Services.mapImage, 0);
+            sketchCanvas.Children.Add(Services.mapImage);
         }
 
         private void OnMouseDown(object sender, MouseButtonEventArgs e)
