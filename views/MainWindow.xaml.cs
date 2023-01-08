@@ -24,13 +24,26 @@ namespace Tempest
         public MainWindow()
         {
             InitializeComponent();
-
-            Closed += MainWindow_Closed;
         }
 
-        private void MainWindow_Closed(object? sender, EventArgs e)
+        private void buttonMinimize_Click(object sender, RoutedEventArgs e)
         {
-            Owner.Close();
+            WindowState = WindowState.Minimized;
+        }
+
+        private void buttonClose_click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+        private void appBar_drag(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+                DragMove();
+        }
+
+        private void Border_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+
         }
     }
 }
