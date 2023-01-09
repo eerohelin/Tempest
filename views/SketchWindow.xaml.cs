@@ -129,12 +129,26 @@ namespace Tempest
             return player;
         }
 
-        private void OnMouseDown(object sender, MouseButtonEventArgs e)
+        private void Draw(MouseEventArgs e)
         {
-            currentPoint = e.GetPosition(this);
-        }
+            Line line = new();
 
-        private void OnMouseUp(object sender, MouseButtonEventArgs e)
+            SolidColorBrush brush = new(Services.brushColor);
+
+            line.Stroke = brush;
+            line.X1 = currentPoint.X;
+            line.Y1 = currentPoint.Y;
+            line.X2 = e.GetPosition(this).X;
+            line.Y2 = e.GetPosition(this).Y;
+
+            points.Add(new Point(e.GetPosition(this).X, e.GetPosition(this).Y));
+
+            currentPoint = e.GetPosition(this);
+
+            sketchCanvas.Children.Add(line);
+        } 
+
+        private void CreateLine()
         {
             Polyline myPolyLine = new();
 
@@ -152,26 +166,33 @@ namespace Tempest
             points.Clear();
         }
 
+        private void OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            currentPoint = e.GetPosition(this);
+            Mouse.Capture(this);
+        }
+
+        private void OnMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            Mouse.Capture(null);
+            switch (Services.tool)
+            {
+                case 1:
+                    CreateLine();
+                    break;
+            }
+        }
+
         private void OnMouseMove(object sender, MouseEventArgs e)
         {
-            //return;
-            if (e.LeftButton == MouseButtonState.Pressed && Services.tool == 1)
+            if (e.LeftButton == MouseButtonState.Pressed)
             {
-                Line line = new();
-
-                SolidColorBrush brush = new(Services.brushColor);
-
-                line.Stroke = brush;
-                line.X1 = currentPoint.X;
-                line.Y1 = currentPoint.Y;
-                line.X2 = e.GetPosition(this).X;
-                line.Y2 = e.GetPosition(this).Y;
-
-                points.Add(new Point(e.GetPosition(this).X, e.GetPosition(this).Y));
-
-                currentPoint = e.GetPosition(this);
-
-                sketchCanvas.Children.Add(line);
+                switch(Services.tool)
+                {
+                    case 1:
+                        Draw(e);
+                        break;
+                }
             }
         }
 
