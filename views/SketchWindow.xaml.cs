@@ -16,7 +16,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Xml.Linq;
 using Tempest.utils;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Tempest
 {
@@ -78,8 +77,16 @@ namespace Tempest
 
             public static void ReloadUI()
             {
-                sketchCanvas.Children.Clear();
-                foreach(UIElement Element in CurrentUiState)
+                UIElement[] tempArray = new UIElement[sketchCanvas.Children.Count];
+                sketchCanvas.Children.CopyTo(tempArray, 0);
+                foreach (UIElement Element in tempArray)
+                {
+                    if (Element is Line || Element is Polyline)
+                    {
+                        sketchCanvas.Children.Remove(Element);
+                    }
+                }
+                foreach (UIElement Element in CurrentUiState)
                 {
                     sketchCanvas.Children.Add(Element);
                 }
