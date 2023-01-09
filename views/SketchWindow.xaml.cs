@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -26,8 +28,6 @@ namespace Tempest
 
         Point currentPoint;
         PointCollection points = new();
-        List<Polyline> lines = new();
-        List<Line> tempLines = new();
 
         public SketchWindow()
         {
@@ -48,6 +48,50 @@ namespace Tempest
             Create_Map();
 
             Create_Player("T");
+
+            UiState.sketchCanvas = sketchCanvas;
+
+        }
+
+        public class UiState : List<UIElement>
+        {
+            public static List<UIElement> CurrentUiState = new();
+            public static List<List<UIElement>> UiStates = new();
+
+            public static Canvas sketchCanvas = new();
+            public static new void Add(UIElement Item)
+            {
+                UiStates.Add(new List<UIElement>(CurrentUiState));
+                CurrentUiState.Add(Item);
+
+                if (UiStates.Count > 20) { UiStates.RemoveAt(0); }
+
+                ReloadUI();
+            }
+
+            public static new void Remove(UIElement Item)
+            {
+                UiStates.Add(new List<UIElement>(CurrentUiState));
+                CurrentUiState.Remove(Item);
+                ReloadUI();
+            }
+
+            public static void ReloadUI()
+            {
+                sketchCanvas.Children.Clear();
+                foreach(UIElement Element in CurrentUiState)
+                {
+                    sketchCanvas.Children.Add(Element);
+                }
+            }
+
+            public static void Undo()
+            {
+                if (!UiStates.Any()) { return; }
+                CurrentUiState = UiStates[UiStates.Count - 1];
+                UiStates.RemoveAt(UiStates.Count - 1);
+                ReloadUI();
+            }
         }
 
         private void Create_Map()
@@ -96,16 +140,9 @@ namespace Tempest
 
             myPolyLine.MouseEnter += (x, y) => { PolyLineHover(x, y, myPolyLine); };
 
-            sketchCanvas.Children.Add(myPolyLine);
-            lines.Add(myPolyLine);
+            UiState.Add(myPolyLine);
 
             points.Clear();
-
-            foreach(Line line in tempLines)
-            {
-                sketchCanvas.Children.Remove(line);
-            }
-            tempLines.Clear();
         }
 
         private void OnMouseMove(object sender, MouseEventArgs e)
@@ -124,7 +161,6 @@ namespace Tempest
                 line.Y2 = e.GetPosition(this).Y;
 
                 points.Add(new Point(e.GetPosition(this).X, e.GetPosition(this).Y));
-                tempLines.Add(line);
 
                 currentPoint = e.GetPosition(this);
 
@@ -136,7 +172,7 @@ namespace Tempest
         {
             if (e.Key == Key.Z && Keyboard.IsKeyDown(Key.LeftCtrl))
             {
-                Services.tool = 2;
+                UiState.Undo();
             }
             if (e.Key == Key.X) // Map image testing shortcuts
             {
@@ -152,8 +188,7 @@ namespace Tempest
         {
             if (Services.tool == 2 && e.LeftButton == MouseButtonState.Pressed)
             {
-                sketchCanvas.Children.Remove(polyline);
-                lines.Remove(polyline);
+                UiState.Remove(polyline);
             }
         }
 
