@@ -16,6 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Xml.Linq;
 using Tempest.utils;
+using Tempest.Utils;
 
 namespace Tempest
 {
@@ -81,7 +82,7 @@ namespace Tempest
                 sketchCanvas.Children.CopyTo(tempArray, 0);
                 foreach (UIElement Element in tempArray)
                 {
-                    if (Element is Line || Element is Polyline)
+                    if (Element is Line || Element is Path || Element is Polyline)
                     {
                         sketchCanvas.Children.Remove(Element);
                     }
@@ -131,15 +132,19 @@ namespace Tempest
 
         private void Draw(MouseEventArgs e)
         {
-            Line line = new();
 
             SolidColorBrush brush = new(Services.brushColor);
-
-            line.Stroke = brush;
-            line.X1 = currentPoint.X;
-            line.Y1 = currentPoint.Y;
-            line.X2 = e.GetPosition(this).X;
-            line.Y2 = e.GetPosition(this).Y;
+            Line line = new()
+            {
+                Stroke = brush,
+                StrokeThickness = 4,
+                StrokeEndLineCap = PenLineCap.Round,
+                StrokeStartLineCap = PenLineCap.Round,
+                X1 = currentPoint.X,
+                Y1 = currentPoint.Y,
+                X2 = e.GetPosition(this).X,
+                Y2 = e.GetPosition(this).Y
+            };
 
             points.Add(new Point(e.GetPosition(this).X, e.GetPosition(this).Y));
 
@@ -150,26 +155,66 @@ namespace Tempest
 
         private void CreateLine()
         {
-            Polyline myPolyLine = new();
+            Point previousPoint = points[0];
+            for (int i = 1; i < points.Count; i++) // Remove points which are too close to eachother
+            {
+                if (points.Count <= 3) { break; }
+                Point currentPoint = points[i];
+                double distance = Math.Sqrt(Math.Pow(currentPoint.X - previousPoint.X, 2) + Math.Pow(currentPoint.Y - previousPoint.Y, 2));
+                if (distance < 3)
+                {
+                    points.RemoveAt(i);
+                    i--;
+                }
+                else
+                {
+                    previousPoint = currentPoint;
+                }
+            }
 
-            SolidColorBrush brush = new(Color.FromArgb(255, 255, 139, 0));
+            SolidColorBrush brush = new(Services.brushColor);
+            switch(Services.lineSmoothing)
+            {
+                case true:
+                    Path path = SmoothLine.Smooth(points);
+                    path.Stroke = brush;
+                    path.StrokeThickness = Services.brushSize;
+                    path.StrokeEndLineCap = PenLineCap.Round;
+                    path.StrokeStartLineCap = PenLineCap.Round;
+                    path.SnapsToDevicePixels = true;
 
-            myPolyLine.Stroke = brush;
-            myPolyLine.StrokeThickness = 2;
+                    path.MouseEnter += (x, y) => { LineHover(x, y, path); };
 
-            myPolyLine.Points = new PointCollection(points);
+                    UiState.Add(path);
+                    break;
+                case false:
+                    Polyline polyline = new()
+                    {
+                        Points = new PointCollection(points),
+                        Stroke = brush,
+                        StrokeThickness = Services.brushSize,
+                        StrokeEndLineCap = PenLineCap.Round,
+                        StrokeStartLineCap = PenLineCap.Round,
+                        SnapsToDevicePixels = true
+                    };
 
-            myPolyLine.MouseEnter += (x, y) => { PolyLineHover(x, y, myPolyLine); };
+                    polyline.MouseEnter += (x, y) => { LineHover(x, y, polyline); };
 
-            UiState.Add(myPolyLine);
-
+                    UiState.Add(polyline);
+                    break;
+            }
             points.Clear();
         }
 
         private void OnMouseDown(object sender, MouseButtonEventArgs e)
         {
-            currentPoint = e.GetPosition(this);
-            Mouse.Capture(this);
+            switch(Services.tool)
+            {
+                case 1:
+                    currentPoint = e.GetPosition(this);
+                    Mouse.Capture(this);
+                    break;
+            }
         }
 
         private void OnMouseUp(object sender, MouseButtonEventArgs e)
@@ -212,11 +257,11 @@ namespace Tempest
             }
         }
 
-        private void PolyLineHover(object sender, MouseEventArgs e, Polyline polyline)
+        private void LineHover(object sender, MouseEventArgs e, UIElement element)
         {
             if (Services.tool == 2 && e.LeftButton == MouseButtonState.Pressed)
             {
-                UiState.Remove(polyline);
+                UiState.Remove(element);
             }
         }
 

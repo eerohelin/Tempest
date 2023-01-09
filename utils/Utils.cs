@@ -8,6 +8,10 @@ using System.Diagnostics;
 using System.Text;
 using System.IO;
 using System.Net.Http;
+using System.Windows.Media;
+using System.Windows.Shapes;
+using System.Windows.Documents;
+using System.ComponentModel;
 
 namespace Tempest.Utils
 {
@@ -157,5 +161,29 @@ namespace Tempest.Utils
                 return $"{gameVersion.Split(".")[0]}.{gameVersion.Split(".")[1]}";
             }
         }
+    }
+
+    public class SmoothLine
+    {
+        public static System.Windows.Shapes.Path Smooth(PointCollection points)
+        {
+            System.Windows.Shapes.Path path = new();
+            PathGeometry geometry = new();
+            PathFigure figure = new()
+            {
+                StartPoint= points[0]
+            };
+            PolyBezierSegment segment = new()
+            {
+                Points = new PointCollection(points)
+            };
+
+            figure.Segments.Add(segment);
+            geometry.Figures.Add(figure);
+            path.Data = geometry;
+
+            return path;
+        }
+
     }
 }

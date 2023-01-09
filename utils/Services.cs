@@ -15,5 +15,7 @@ namespace Tempest.utils
         public static Color brushColor = Color.FromRgb(255,255,255);
         public static MapImage mapImage = new();
         public static int tool = 1;
+        public static bool lineSmoothing = true;
+        public static double brushSize = 4;
     }
 }
