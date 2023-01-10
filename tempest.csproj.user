@@ -7,11 +7,23 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="views\DrawView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="views\ReplayView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="views\SketchWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Page Update="views\DrawView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="views\ReplayView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="views\MainWindow.xaml">
       <SubType>Designer</SubType>
     </Page>

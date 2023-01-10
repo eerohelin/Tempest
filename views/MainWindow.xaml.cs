@@ -28,7 +28,14 @@ namespace Tempest
 
         private void buttonMinimize_Click(object sender, RoutedEventArgs e)
         {
-            WindowState = WindowState.Minimized;
+            if(Height == 30)
+            {
+                Height = 600;
+            }
+            else
+            {
+               Height = 30;
+            }
         }
 
         private void buttonClose_click(object sender, RoutedEventArgs e)

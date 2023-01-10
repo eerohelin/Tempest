@@ -9,18 +9,56 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="assets\eraserw.png" />
     <None Remove="assets\icon.png" />
     <None Remove="assets\lol_map.png" />
+    <None Remove="assets\mapw.png" />
+    <None Remove="assets\movew.png" />
+    <None Remove="assets\pencilw.png" />
+    <None Remove="assets\resetw.png" />
+    <None Remove="assets\savew.png" />
+    <None Remove="assets\trashw.png" />
+    <None Remove="assets\undow.png" />
+    <None Remove="assets\wardw.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="assets\eraserw.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\icon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="assets\lol_map.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\mapw.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\movew.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\pencilw.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\resetw.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\savew.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\trashw.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\undow.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="assets\icon.png" />
+    <Content Include="assets\wardw.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
