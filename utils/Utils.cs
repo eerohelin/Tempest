@@ -13,7 +13,7 @@ using System.Windows.Shapes;
 using System.Windows.Documents;
 using System.ComponentModel;
 
-namespace Tempest.Utils
+namespace Tempest
 {
     public class Replay
     {
@@ -26,7 +26,7 @@ namespace Tempest.Utils
 
             var result = await client.GetAsync(url);
             var response = await result.Content.ReadAsStringAsync();
-            Console.WriteLine($"Get result {response}");
+            Trace.WriteLine($"Get result {response}");
             return response;
         }
 
@@ -43,7 +43,7 @@ namespace Tempest.Utils
 
             var result = await client.PostAsync(url, stringContent);
             var response = await result.Content.ReadAsStringAsync();
-            Console.WriteLine($"Post result {response}");
+            Trace.WriteLine($"Post result {response}");
             return response;
         }
     }

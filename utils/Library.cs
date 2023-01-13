@@ -14,7 +14,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace Tempest.utils
+namespace Tempest
 {
     internal class Player : Border
     {
@@ -85,6 +85,29 @@ namespace Tempest.utils
         {
             set { Opacity = value; OpacityChanged(this, EventArgs.Empty); }
             get { return Opacity; }
+        }
+    }
+
+    internal class Timestamp : Grid
+    {
+        private int time;
+        private string title;
+
+        public Timestamp(int _time, string _title)
+        {
+            time = _time;
+            title = _title;
+            Style = FindResource("mainButtonStyle") as Style;
+        }
+
+        async public void Play()
+        {
+            await Replay.setPosition(time);
+        }
+
+        public void Delete()
+        {
+            
         }
     }
 }
