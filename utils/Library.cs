@@ -97,7 +97,6 @@ namespace Tempest
         {
             time = _time;
             title = _title;
-            Style = FindResource("mainButtonStyle") as Style;
         }
 
         async public void Play()
