@@ -87,26 +87,4 @@ namespace Tempest
             get { return Opacity; }
         }
     }
-
-    internal class Timestamp : Grid
-    {
-        private int time;
-        private string title;
-
-        public Timestamp(int _time, string _title)
-        {
-            time = _time;
-            title = _title;
-        }
-
-        async public void Play()
-        {
-            await Replay.setPosition(time);
-        }
-
-        public void Delete()
-        {
-            
-        }
-    }
 }

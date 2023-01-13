@@ -21,7 +21,7 @@
 
             <WrapPanel Grid.Row="1" HorizontalAlignment="Center">
                 <TextBlock>Timestamps</TextBlock>
-                <TextBox Name="titleTextBox" 
+                <TextBox Name="titleTextBox"
                          Style="{StaticResource textBoxStyle}"    
                          Width="200">
                 </TextBox>
@@ -49,6 +49,7 @@
                 </ComboBox>
             </WrapPanel>
             <StackPanel Grid.Row="2" 
+                        x:Name="timestampContainer"
                         Orientation="Vertical" 
                         Background="#515a69" 
                         Margin="10">

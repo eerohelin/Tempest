@@ -23,6 +23,8 @@ namespace Tempest
         public ReplayView()
         {
             InitializeComponent();
+
+            //timestampContainer.Children.Add(new Timestamp("Test1", 500)); Example Timestamp
         }
     }
 }
