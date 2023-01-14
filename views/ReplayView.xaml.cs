@@ -57,5 +57,19 @@ namespace Tempest
 
             timeTextBox.Text = $"{parsedTime.Minutes}:{parsedTime.Seconds}";
         }
+
+        private void onAddTimestampButtonClick(object sender, RoutedEventArgs e)
+        {
+            string[] splitTime = Regex.Split(timeTextBox.Text, @"[;:.,]+");
+
+            int minutes = Int32.Parse(splitTime[0]);
+            int seconds = Int32.Parse(splitTime[1]);
+
+            int totalSeconds = minutes * 60 + seconds;
+
+            string title = titleTextBox.Text.Length != 0 ? titleTextBox.Text : $"Timestamp #{timestampContainer.Children.Count + 1}";
+
+            timestampContainer.Children.Add(new Timestamp(title, totalSeconds));
+        }
     }
 }

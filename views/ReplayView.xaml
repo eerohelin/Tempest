@@ -40,6 +40,7 @@
                          x:Name="addTimestampButton"
                          IsEnabled="False"
                          Width="200" 
+                         Click="onAddTimestampButtonClick"
                          Margin="0,5,0,0">
                     Add
                 </Button>
