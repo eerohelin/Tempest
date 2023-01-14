@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -25,6 +27,20 @@ namespace Tempest
             InitializeComponent();
 
             //timestampContainer.Children.Add(new Timestamp("Test1", 500)); Example Timestamp
+        }
+
+        private void onTimeTextBoxChanged(object sender, TextChangedEventArgs e)
+        {
+            TextBox textBox = (TextBox)sender;
+            Regex regex = new(@"^[0-9]+[,.;:][0-9]{1,2}$");
+            Button button = addTimestampButton;
+
+            if (regex.IsMatch(textBox.Text))
+            {
+                button.IsEnabled = true;
+                return;
+            }
+            button.IsEnabled = false;
         }
     }
 }

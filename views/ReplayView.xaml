@@ -27,14 +27,18 @@
                 </TextBox>
                 <TextBox Name="timeTextBox" 
                          Style="{StaticResource textBoxStyle}"    
+                         TextChanged="onTimeTextBoxChanged"
                          Width="200">
                 </TextBox>
                 <Button  Style="{StaticResource mainButtonStyle}" 
                          Width="200" 
+                         Click="onGetCurrentTimeButtonClick"
                          Margin="0,15,0,0">
                     Get Current Time
                 </Button>
                 <Button  Style="{StaticResource mainButtonStyle}" 
+                         x:Name="addTimestampButton"
+                         IsEnabled="False"
                          Width="200" 
                          Margin="0,5,0,0">
                     Add
