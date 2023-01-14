@@ -12,22 +12,33 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Documents;
 using System.ComponentModel;
+using System.Text.Json.Nodes;
 
 namespace Tempest
 {
     public class Replay
     {
         private static string url = $"https://127.0.0.1:2999/replay/playback";
-        public static async Task<string> getPosition()
+        public static async Task<JsonObject> getPosition()
         {
             HttpClientHandler clientHandler = new HttpClientHandler();
             clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
             HttpClient client = new HttpClient(clientHandler);
+            HttpResponseMessage result;
 
-            var result = await client.GetAsync(url);
+            try
+            {
+                result = await client.GetAsync(url);
+            } catch (HttpRequestException)
+            {
+                // TODO Implement informing the user of the reason for the exception
+                return null;
+            }
+
             var response = await result.Content.ReadAsStringAsync();
             Trace.WriteLine($"Get result {response}");
-            return response;
+            JsonObject? obj = JsonSerializer.Deserialize<JsonObject>(response);
+            return obj;
         }
 
         /// <param name='seconds'>time position in seconds<param>
