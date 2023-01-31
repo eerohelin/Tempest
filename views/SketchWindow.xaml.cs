@@ -26,6 +26,7 @@ namespace Tempest
 
         Point currentPoint;
         PointCollection points = new();
+        List<UIElement> arrowLineGroup = new();
 
         public SketchWindow()
         {
@@ -80,7 +81,7 @@ namespace Tempest
                 sketchCanvas.Children.CopyTo(tempArray, 0);
                 foreach (UIElement Element in tempArray)
                 {
-                    if (Element is Line || Element is Path || Element is Polyline)
+                    if (Element is Line || Element is Path || Element is Polyline || Element is Canvas)
                     {
                         sketchCanvas.Children.Remove(Element);
                     }
@@ -204,11 +205,108 @@ namespace Tempest
             points.Clear();
         }
 
+        private void DrawArrow(MouseEventArgs e)
+        {
+            foreach(UIElement element in arrowLineGroup)
+            {
+                sketchCanvas.Children.Remove(element);
+            }
+
+            arrowLineGroup.Clear();
+
+
+            int angle = 25; // Angle of the lines on the Arrow
+
+
+            double midPointX = (currentPoint.X + e.GetPosition(this).X) / 2;
+            double midPointY = (currentPoint.Y + e.GetPosition(this).Y) / 2;
+
+            SolidColorBrush brush = new(Services.brushColor);
+
+            Line mainLine = new()
+            {
+                Stroke = brush,
+                StrokeThickness = Services.brushSize,
+                StrokeEndLineCap = PenLineCap.Round,
+                StrokeStartLineCap = PenLineCap.Round,
+                X1 = currentPoint.X,
+                Y1 = currentPoint.Y,
+                X2 = e.GetPosition(this).X,
+                Y2 = e.GetPosition(this).Y
+            };
+
+            Line arrowLine1 = new()
+            {
+                Stroke = brush,
+                StrokeThickness = Services.brushSize,
+                StrokeEndLineCap = PenLineCap.Round,
+                StrokeStartLineCap = PenLineCap.Round,
+                X1 = midPointX,
+                Y1 = midPointY,
+                X2 = e.GetPosition(this).X,
+                Y2 = e.GetPosition(this).Y
+            };
+
+            Line arrowLine2 = new()
+            {
+                Stroke = brush,
+                StrokeThickness = Services.brushSize,
+                StrokeEndLineCap = PenLineCap.Round,
+                StrokeStartLineCap = PenLineCap.Round,
+                X1 = midPointX,
+                Y1 = midPointY,
+                X2 = e.GetPosition(this).X,
+                Y2 = e.GetPosition(this).Y
+            };
+
+            RotateTransform rotate1 = new()
+            {
+                CenterX = e.GetPosition(this).X,
+                CenterY = e.GetPosition(this).Y,
+                Angle = angle
+            };
+            RotateTransform rotate2 = new()
+            {
+                CenterX = e.GetPosition(this).X,
+                CenterY = e.GetPosition(this).Y,
+                Angle = -angle
+            };
+
+            arrowLine1.RenderTransform = rotate1;
+            arrowLine2.RenderTransform = rotate2;
+
+            arrowLineGroup.Add(mainLine);
+            arrowLineGroup.Add(arrowLine1);
+            arrowLineGroup.Add(arrowLine2);
+            sketchCanvas.Children.Add(mainLine);
+            sketchCanvas.Children.Add(arrowLine1);
+            sketchCanvas.Children.Add(arrowLine2);
+        }
+
+        private void CreateArrow()
+        {
+            Canvas arrowContainer = new();
+            foreach(UIElement element in new List<UIElement>(arrowLineGroup))
+            {
+                sketchCanvas.Children.Remove(element);
+                arrowContainer.Children.Add(element);
+            }
+
+            arrowLineGroup.Clear();
+
+            arrowContainer.MouseEnter += (x, y) => { LineHover(x, y, arrowContainer); };
+            UiState.Add(arrowContainer);
+        }
+
         private void OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             switch(Services.tool)
             {
                 case 1:
+                    currentPoint = e.GetPosition(this);
+                    Mouse.Capture(this);
+                    break;
+                case 3:
                     currentPoint = e.GetPosition(this);
                     Mouse.Capture(this);
                     break;
@@ -223,6 +321,9 @@ namespace Tempest
                 case 1:
                     CreateLine();
                     break;
+                case 3:
+                    CreateArrow();
+                    break;
             }
         }
 
@@ -234,6 +335,9 @@ namespace Tempest
                 {
                     case 1:
                         Draw(e);
+                        break;
+                    case 3:
+                        DrawArrow(e);
                         break;
                 }
             }

@@ -70,6 +70,9 @@ namespace Tempest
             string title = titleTextBox.Text.Length != 0 ? titleTextBox.Text : $"Timestamp #{timestampContainer.Children.Count + 1}";
 
             timestampContainer.Children.Add(new Timestamp(title, totalSeconds));
+
+            titleTextBox.Text = "";
+            timeTextBox.Text = "";
         }
     }
 }
