@@ -23,6 +23,7 @@ namespace Tempest
 
         private int _time;
         private string _title;
+        public List<string> Tags = new();
         public Timestamp(string title, int time)
         {
             InitializeComponent();
@@ -32,6 +33,8 @@ namespace Tempest
 
             titleLabel.Content = _title;
             timeLabel.Content = _time;
+
+            Tags.Add("test");
         }
 
         private async void onPlayTimeButtonClick(object sender, RoutedEventArgs e)

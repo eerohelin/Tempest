@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -25,11 +26,49 @@ namespace Tempest
     /// </summary>
     public partial class ReplayView : UserControl
     {
+
+        public static BindingList<string> CurrentTags = new();
+        public static List<ComboBoxTag> Tags = new();
+
         public ReplayView()
         {
             InitializeComponent();
 
             //timestampContainer.Children.Add(new Timestamp("Test1", 500)); Example Timestamp
+
+            Loaded += ReplayWindow_loaded;
+        }
+
+        private void ReplayWindow_loaded(object sender, RoutedEventArgs e)
+        {
+            timestampComboBox.ItemsSource = Tags;
+
+            CurrentTags.ListChanged += CurrentTags_ListChanged;
+
+            Tags.Add(new ComboBoxTag("test"));
+            Tags.Add(new ComboBoxTag("test2"));
+        }
+
+        private void CurrentTags_ListChanged(object? sender, ListChangedEventArgs e)
+        {
+            if (CurrentTags.Count <= 0 ) { ShowAllTimestamps(); return; }
+            foreach (Timestamp timestamp in timestampContainer.Children)
+            {
+                if (timestamp.Tags.Any(item => CurrentTags.Contains(item)))
+                {
+                    timestamp.Visibility = Visibility.Visible;
+                    continue;
+                }
+                timestamp.Visibility = Visibility.Hidden;
+            }
+        }
+
+        private void ShowAllTimestamps()
+        {
+            foreach (Timestamp timestamp in timestampContainer.Children)
+            {
+                timestamp.Visibility = Visibility.Visible;
+            }
         }
 
         private void onTimeTextBoxChanged(object sender, TextChangedEventArgs e)
