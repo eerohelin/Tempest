@@ -23,11 +23,13 @@
                 <TextBlock>Timestamps</TextBlock>
                 <TextBox Name="titleTextBox"
                          Style="{StaticResource textBoxStyle}"    
+                         KeyDown="onTitleTextBoxKeyDown"
                          Width="200">
                 </TextBox>
                 <TextBox Name="timeTextBox" 
                          Style="{StaticResource textBoxStyle}"    
                          TextChanged="onTimeTextBoxChanged"
+                         KeyDown="onTimeTextBoxKeyDown"
                          Width="200">
                 </TextBox>
                 <Button  Style="{StaticResource mainButtonStyle}" 

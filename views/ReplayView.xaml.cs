@@ -99,6 +99,11 @@ namespace Tempest
 
         private void onAddTimestampButtonClick(object sender, RoutedEventArgs e)
         {
+            AddTimestamp();
+        }
+
+        private void AddTimestamp()
+        {
             string[] splitTime = Regex.Split(timeTextBox.Text, @"[;:.,]+");
 
             int minutes = Int32.Parse(splitTime[0]);
@@ -112,6 +117,24 @@ namespace Tempest
 
             titleTextBox.Text = "";
             timeTextBox.Text = "";
+        }
+
+        private void onTitleTextBoxKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return)
+            {
+                timeTextBox.Focus();
+            }
+        }
+
+        private void onTimeTextBoxKeyDown(object sender, KeyEventArgs e)
+        {
+            if (!addTimestampButton.IsEnabled) { return; }
+
+            if (e.Key == Key.Return)
+            {
+                AddTimestamp();
+            }
         }
     }
 }
