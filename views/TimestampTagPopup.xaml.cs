@@ -85,6 +85,23 @@ namespace Tempest
             _owner.Tags.Add(checkbox.Content.ToString());
         }
 
+        private void Check_Checkbox(string name)
+        {
+            foreach (var child in tagContainer.Children)
+            {
+                if (child is StackPanel)
+                {
+                    StackPanel childPanel = (StackPanel)child;
+                    if ((string)childPanel.Tag == name)
+                    {
+                        CheckBox checkbox = (CheckBox)childPanel.Children[0];
+                        checkbox.IsChecked = true;
+                        return;
+                    }
+                }
+            }
+        }
+
         private void DeleteButton_Clicked(object sender, RoutedEventArgs e, string name)
         {
             RemoveTag(name);
@@ -107,16 +124,18 @@ namespace Tempest
         {
             if (e.Key == Key.Enter)
             {
-                CreateTag();
+                TagSetup();
             }
         }
 
-        private void CreateTag()
+        private void TagSetup()
         {
             TextBox nameInput = (TextBox)tempTag.Children[0];
             string name = nameInput.Text;
             tagContainer.Children.Remove(tempTag);
             ReplayView.TagManager.CreateTag(name);
+
+            Check_Checkbox(name);
         }
 
         private void CancelTagCreation(object sender, RoutedEventArgs e)
