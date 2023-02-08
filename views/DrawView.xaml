@@ -35,14 +35,14 @@
                     >
                     </Image>
                 </Button>
-                <Button Style="{StaticResource mainButtonStyle}">
+                <Button Style="{StaticResource mainButtonStyle}" Click="SwitchTool" Tag="1">
                     <Image Source="/assets/pencilw.png" 
                            Width="24" 
                            Height="24"
                     >
                     </Image>
                 </Button>
-                <Button Style="{StaticResource mainButtonStyle}">
+                <Button Style="{StaticResource mainButtonStyle}" Click="SwitchTool" Tag="2">
                     <Image Source="/assets/eraserw.png" 
                            Width="24" 
                            Height="24"

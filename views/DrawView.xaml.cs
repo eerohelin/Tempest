@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +24,13 @@ namespace Tempest
         public DrawView()
         {
             InitializeComponent();
+        }
+
+        private void SwitchTool(object sender, RoutedEventArgs e)
+        {
+            var myValue = ((Button)sender).Tag;
+            int tool = Int32.Parse(myValue.ToString());
+            Services.tool = tool;
         }
     }
 }

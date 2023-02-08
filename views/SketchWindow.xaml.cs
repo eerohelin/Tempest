@@ -35,6 +35,8 @@ namespace Tempest
             ShowInTaskbar = false;
 
             Loaded += SketchWindow_Loaded;
+
+            Services.ToolChanged += Services_ToolChanged;
         }
 
         private void SketchWindow_Loaded(object sender, RoutedEventArgs e)
@@ -98,6 +100,22 @@ namespace Tempest
                 CurrentUiState = UiStates[UiStates.Count - 1];
                 UiStates.RemoveAt(UiStates.Count - 1);
                 ReloadUI();
+            }
+        }
+
+        private void Services_ToolChanged(object? sender, EventArgs e)
+        {
+            switch(Services.tool)
+            {
+                case 1:
+                    Cursor = Cursors.Pen;
+                    break;
+                case 2:
+                    Cursor = Cursors.Arrow;
+                    break;
+                case 3:
+                    Cursor = Cursors.Cross;
+                    break;
             }
         }
 
