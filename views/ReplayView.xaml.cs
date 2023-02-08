@@ -181,5 +181,10 @@ namespace Tempest
             tagFilterPopup.PlacementTarget = button;
             tagFilterPopup.IsOpen = true;
         }
+
+        private void onClearButtonClick(object sender, RoutedEventArgs e)
+        {
+            timestampContainer.Children.Clear();
+        }
     }
 }
