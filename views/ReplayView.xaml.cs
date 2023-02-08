@@ -11,6 +11,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -28,7 +29,9 @@ namespace Tempest
     {
 
         public static BindingList<string> CurrentTags = new();
-        public static List<ComboBoxTag> Tags = new();
+        public static BindingList<string> Tags = new();
+        public static StackPanel tsContainer = new();
+        public static TagFilterPopup tagFilterPopup = new();
 
         public ReplayView()
         {
@@ -39,14 +42,49 @@ namespace Tempest
             Loaded += ReplayWindow_loaded;
         }
 
+        public class TagManager
+        {
+
+            public static void CreateTag(string tag)
+            {
+                Tags.Add(tag);
+                tagFilterPopup.CreateTag(tag);
+
+                foreach(Timestamp timestamp in tsContainer.Children)
+                {
+                    timestamp.AddTag(tag);
+                }
+            }
+
+            public static void DeleteTag(string tag)
+            {
+                Tags.Remove(tag);
+                tagFilterPopup.RemoveTag(tag);
+
+                foreach (Timestamp timestamp in tsContainer.Children)
+                {
+                    timestamp.RemoveTag(tag);
+                }
+                CurrentTags.Remove(tag);
+            }
+
+            public static void AddTag(string tag, Timestamp timestamp)
+            {
+                timestamp.Tags.Add(tag);
+            }
+
+            public static void RemoveTag(string tag, Timestamp timestamp)
+            {
+                timestamp.Tags.Remove(tag);
+            }
+        }
+
         private void ReplayWindow_loaded(object sender, RoutedEventArgs e)
         {
-            timestampComboBox.ItemsSource = Tags;
+            ContextMenuService.SetIsEnabled(this, false);
 
             CurrentTags.ListChanged += CurrentTags_ListChanged;
-
-            Tags.Add(new ComboBoxTag("test"));
-            Tags.Add(new ComboBoxTag("test2"));
+            tsContainer = timestampContainer;
         }
 
         private void CurrentTags_ListChanged(object? sender, ListChangedEventArgs e)
@@ -135,6 +173,13 @@ namespace Tempest
             {
                 AddTimestamp();
             }
+        }
+
+        private void onTagFilterButtonClick(object sender, RoutedEventArgs e)
+        {
+            Button button = (Button)sender;
+            tagFilterPopup.PlacementTarget = button;
+            tagFilterPopup.IsOpen = true;
         }
     }
 }

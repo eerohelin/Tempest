@@ -154,6 +154,7 @@ namespace Tempest
 
         private void CreateLine()
         {
+            if (points.Count <= 0 ) { return; }
             Point previousPoint = points[0];
             for (int i = 1; i < points.Count; i++) // Remove points which are too close to eachother
             {

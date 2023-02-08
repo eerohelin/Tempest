@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,17 +27,41 @@ namespace Tempest
         private int _time;
         private string _title;
         public List<string> Tags = new();
+        public BindingList<string> AvailableTags = new();
+        public TimestampTagPopup Popup;
         public Timestamp(string title, int time)
         {
             InitializeComponent();
 
             _title = title;
             _time = time;
+            Popup = new TimestampTagPopup(this);
 
             titleLabel.Content = _title;
             timeLabel.Content = _time;
 
-            Tags.Add("test");
+            GetTags();
+        }
+
+        public void AddTag(string tag)
+        {
+            AvailableTags.Add(tag);
+            Popup.CreateTag(tag);
+        }
+
+        public void RemoveTag(string tag)
+        {
+            AvailableTags.Remove(tag);
+            Tags.Remove(tag);
+        }
+
+
+        private void GetTags()
+        {
+            foreach (string tag in ReplayView.Tags)
+            {
+                AddTag(tag);
+            }
         }
 
         private async void onPlayTimeButtonClick(object sender, RoutedEventArgs e)
@@ -46,6 +73,13 @@ namespace Tempest
         {
             StackPanel _parent = (StackPanel)VisualTreeHelper.GetParent(this);
             _parent.Children.Remove(this);
+        }
+
+        private void TagMenuButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            Button button = (Button)sender;
+            Popup.PlacementTarget = button;
+            Popup.IsOpen = true;
         }
     }
 }

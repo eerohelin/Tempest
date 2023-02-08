@@ -7,9 +7,6 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="views\ComboBoxTag.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="views\DrawView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -19,14 +16,17 @@
     <Compile Update="views\SketchWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="views\TagFilterPopup.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="views\Timestamp.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="views\TimestampTagPopup.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="views\ComboBoxTag.xaml">
-      <SubType>Designer</SubType>
-    </Page>
     <Page Update="views\DrawView.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -39,7 +39,13 @@
     <Page Update="views\SketchWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="views\TagFilterPopup.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="views\Timestamp.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="views\TimestampTagPopup.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

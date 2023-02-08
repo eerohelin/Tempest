@@ -23,14 +23,18 @@
         <StackPanel Grid.Column="1" Width="100" Orientation="Horizontal">
             <Button x:Name="playTimeButton"
                     Click="onPlayTimeButtonClick"
-                    Width="50"
+                    
                 >
                 Go
             </Button>
             <Button x:Name="deleteButton" 
                     Click="onDeleteButtonClick"
-                    Width="50">
+                    >
                 X
+            </Button>
+            <Button x:Name="tagMenuButton"
+                    Click="TagMenuButton_OnClick">
+                Tags
             </Button>
         </StackPanel>
     </Grid>
