@@ -47,13 +47,20 @@ namespace Tempest
             HttpClientHandler clientHandler = new HttpClientHandler();
             clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
             HttpClient client = new HttpClient(clientHandler);
+            HttpResponseMessage result;
 
             var values = new Dictionary<string, int> { { "time", seconds } };
             var json = JsonSerializer.Serialize(values);
             var stringContent = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
 
-            var result = await client.PostAsync(url, stringContent);
-            var response = await result.Content.ReadAsStringAsync();
+            try
+            {
+                result = await client.PostAsync(url, stringContent);
+            } catch (HttpRequestException)
+            {
+                return null;
+            }
+                var response = await result.Content.ReadAsStringAsync();
             Trace.WriteLine($"Post result {response}");
             return response;
         }

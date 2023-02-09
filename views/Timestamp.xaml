@@ -16,24 +16,37 @@
         </Grid.ColumnDefinitions>
         
         
-        <StackPanel Orientation="Horizontal" Width="100" Grid.Column="0">
-            <Label x:Name="titleLabel"></Label>
-            <Label x:Name="timeLabel"></Label>
+        <StackPanel Orientation="Vertical"
+                    Width="100"
+                    Grid.Column="0"
+                    Background="#1e232b"
+                    >
+            <Label x:Name="titleLabel"
+                   Padding="0"
+                   Foreground="WhiteSmoke"
+                   />
+            <Label x:Name="timeLabel"
+                   Padding="0"
+                   Foreground="WhiteSmoke"
+                   />
         </StackPanel>
         <StackPanel Grid.Column="1" Width="100" Orientation="Horizontal">
             <Button x:Name="playTimeButton"
                     Click="onPlayTimeButtonClick"
+                    Width="30"
                     
                 >
                 Go
             </Button>
             <Button x:Name="deleteButton" 
                     Click="onDeleteButtonClick"
+                    Width="30"
                     >
                 X
             </Button>
             <Button x:Name="tagMenuButton"
-                    Click="TagMenuButton_OnClick">
+                    Click="TagMenuButton_OnClick"
+                    Width="30">
                 Tags
             </Button>
         </StackPanel>

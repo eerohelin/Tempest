@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -35,10 +36,11 @@ namespace Tempest
 
             _title = title;
             _time = time;
+            TimeSpan parsedTime = TimeSpan.FromSeconds(time);
             Popup = new TimestampTagPopup(this);
 
             titleLabel.Content = _title;
-            timeLabel.Content = _time;
+            timeLabel.Content = $"{(int)parsedTime.TotalMinutes}:{parsedTime.Seconds}";
 
             GetTags();
         }
