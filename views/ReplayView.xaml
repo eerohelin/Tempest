@@ -59,12 +59,14 @@
                     Filter
                 </Button>
             </WrapPanel>
-            <StackPanel Grid.Row="2" 
-                        x:Name="timestampContainer"
-                        Orientation="Vertical" 
-                        Background="#515a69" 
-                        Margin="10">
-            </StackPanel>
+            <ScrollViewer Grid.Row="2"
+                          VerticalScrollBarVisibility="Hidden"
+                          Background="#515a69"
+                          Margin="10">
+                <StackPanel x:Name="timestampContainer"
+                            Orientation="Vertical">
+                </StackPanel>
+            </ScrollViewer>
         </Grid>
     </Grid>
 </UserControl>
