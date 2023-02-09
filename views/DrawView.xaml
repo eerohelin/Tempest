@@ -49,7 +49,7 @@
                     >
                     </Image>
                 </Button>
-                <Button Style="{StaticResource mainButtonStyle}">
+                <Button Style="{StaticResource mainButtonStyle}" Click="ToggleMap">
                     <Image Source="/assets/mapw.png" 
                            Width="24" Height="24">
                     </Image>
@@ -61,7 +61,7 @@
                     >
                     </Image>
                 </Button>
-                <Button Style="{StaticResource mainButtonStyle}">
+                <Button Style="{StaticResource mainButtonStyle}" Click="UndoButton_Click">
                     <Image Source="/assets/undow.png" 
                            Width="24" 
                            Height="24"
@@ -75,7 +75,7 @@
                     >
                     </Image>
                 </Button>
-                <Button Style="{StaticResource mainButtonStyle}">
+                <Button Style="{StaticResource mainButtonStyle}" Click="ClearButton_Click">
                     <Image Source="/assets/trashw.png" 
                            Width="24" 
                            Height="24"

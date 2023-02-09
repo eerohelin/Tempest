@@ -101,6 +101,19 @@ namespace Tempest
                 UiStates.RemoveAt(UiStates.Count - 1);
                 ReloadUI();
             }
+
+            public static void ClearLines()
+            {
+                UiStates.Add(new List<UIElement>(CurrentUiState));
+                foreach (UIElement Element in new List<UIElement>(CurrentUiState))
+                {
+                    if (Element is Line || Element is Path || Element is Polyline || Element is Canvas)
+                    {
+                        CurrentUiState.Remove(Element);
+                    }
+                }
+                ReloadUI();
+            }
         }
 
         private void Services_ToolChanged(object? sender, EventArgs e)

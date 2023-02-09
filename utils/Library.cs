@@ -27,12 +27,16 @@ namespace Tempest
             PreviewMouseUp += PlayerMouseUp;
             Services.mapImage.OpacityChanged += UpdateOpacity;
 
-            Label testText = new();
-            testText.Content = role;
-            testText.VerticalContentAlignment = VerticalAlignment.Center;
-            testText.HorizontalAlignment = HorizontalAlignment.Center;
+            Label roleText = new()
+            {
+                Content = role,
+                VerticalContentAlignment = VerticalAlignment.Center,
+                HorizontalAlignment = HorizontalAlignment.Center
+            };
 
-            this.Child = testText;
+            Child = roleText;
+
+            Panel.SetZIndex(this, 10000);
 
             Opacity = 0;
         }
@@ -50,6 +54,7 @@ namespace Tempest
 
         private void PlayerMouseDown(object sender, MouseButtonEventArgs e)
         {
+            if (Services.tool != 4) { return; }
             moving = true;
             Mouse.Capture(this);
         }
