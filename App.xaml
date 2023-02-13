@@ -84,6 +84,46 @@
             </Style.Triggers>
         </Style>
 
+        <Style x:Key="toggleDrawButtonStyle" TargetType="{x:Type ToggleButton}">
+            <Setter Property="Width" Value="25"></Setter>
+            <Setter Property="Height" Value="25"></Setter>
+            <Setter Property="BorderThickness" Value="0"></Setter>
+            <Setter Property="HorizontalAlignment" Value="Right"></Setter>
+            <Setter Property="Background" Value="#181d24"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                        <Border Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Content">
+                <Setter.Value>
+                    <Image Source="/assets/pencilw.png" Stretch="Fill" Width="20" Height="20"/>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Content">
+                        <Setter.Value>
+                            <Image Source="/assets/pointerw.png" Stretch="Fill" Width="20" Height="20"/>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger><Trigger Property="IsChecked" Value="False">
+                    <Setter Property="Content">
+                        <Setter.Value>
+                            <Image Source="/assets/pencilw.png" Stretch="Fill" Width="20" Height="20"/>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#9452ff"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
         <!-- STYLE: COMBO BOXES -->
         <Style x:Key="comboBoxStyle" TargetType="ComboBox">
             <Setter Property="Foreground" Value="WhiteSmoke"></Setter>

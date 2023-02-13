@@ -76,6 +76,12 @@
                 Margin="0,2,5,2"
             >
                 <ToggleButton
+                    Style="{StaticResource toggleDrawButtonStyle}"
+                    Checked="drawStateChecked"
+                    Unchecked="drawStateUnchecked"
+                >
+                </ToggleButton>
+                <ToggleButton
                     Style="{StaticResource minimizeButtonStyle}"
                     Click="buttonMinimize_Click"
                     x:Name="buttonMinimize"

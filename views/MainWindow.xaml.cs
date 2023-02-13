@@ -52,5 +52,15 @@ namespace Tempest
         {
 
         }
+
+        private void drawStateChecked(object sender, RoutedEventArgs e)
+        {
+            Owner.Opacity = 1;
+        }
+
+        private void drawStateUnchecked(object sender, RoutedEventArgs e)
+        {
+            Owner.Opacity = 0;
+        }
     }
 }
