@@ -127,7 +127,11 @@ namespace Tempest
         public static void OpenROFL(string roflPath)
         {
 
-            string roflVersion = GetROFLVersion(roflPath);
+            if (!roflPath.Contains(".rofl")) { return; }
+
+            ReplayObject replay = ParseROFL(roflPath);
+            var parsedROFLVersion = replay.gameVersion.ToString().Split('.').Take(2);
+            string roflVersion = string.Join(".", parsedROFLVersion);
 
             // TODO: Loop through all possible League.exe's in the settings.json file and compare their versions to the rofl's version
             var versionInfo = FileVersionInfo.GetVersionInfo(@"C:\Riot Games\League of Legends\Game\League of Legends.exe");
@@ -157,26 +161,33 @@ namespace Tempest
             }
         }
 
-        private static string GetROFLVersion(string path)
+        public static ReplayObject ParseROFL(string path)
         {
-            using (FileStream fs = File.OpenRead(path))
+            if (!path.Contains(".rofl")) { return null; }
+            string replayFileContents = string.Join("", File.ReadLines(path, Encoding.Default).Take(20).ToList<string>().ToArray<string>());
+            return GetReplay(replayFileContents);
+        }
+
+
+        private static ReplayObject GetReplay(string replayFileContents)
+        {
+            int jsonStartIndex = replayFileContents.IndexOf("{\"gameLength\"");
+            int jsonEndIndex = replayFileContents.IndexOf("\\\"}]\"}") + "\\\"}]\"}".Length;
+
+            try
             {
-                byte[] b = new byte[1024];
-                UTF8Encoding temp = new UTF8Encoding(true);
+                JsonNode parsed = JsonObject.Parse(replayFileContents.Substring(jsonStartIndex, (jsonEndIndex - jsonStartIndex)));
 
-                fs.Read(b, 0, b.Length);
-                string[] parsedData = temp.GetString(b).Split(",");
-                string gameVersion = "";
+                string cleanedJSON = parsed.ToString().Replace("\"[", "[").Replace("]\"", "]").Replace(@"\u0022", "\"");
 
-                for (int i = 0; i < parsedData.Length; i++)
-                {
-                    if (parsedData[i].Contains("gameVersion"))
-                    {
-                        gameVersion = parsedData[i].Split(":")[1].Split(@"""")[1];
-                    }
-                }
+                ReplayObject replay = JsonSerializer.Deserialize<ReplayObject>(cleanedJSON);
 
-                return $"{gameVersion.Split(".")[0]}.{gameVersion.Split(".")[1]}";
+                return replay;
+
+            } catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return null;
             }
         }
     }
