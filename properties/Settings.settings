@@ -5,7 +5,7 @@
     <Setting Name="initialized" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="lol_location" Type="System.String[]" Scope="User">
+    <Setting Name="lol_location" Type="System.Collections.Specialized.StringCollection" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="past_rofl_location" Type="System.String" Scope="User">
@@ -14,7 +14,7 @@
     <Setting Name="past_projectfile_location" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="past_projects" Type="System.String[]" Scope="User">
+    <Setting Name="past_projects" Type="System.Collections.Specialized.StringCollection" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>

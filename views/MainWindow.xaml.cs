@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -24,6 +25,12 @@ namespace Tempest
         public MainWindow()
         {
             InitializeComponent();
+
+            // Test add to lol_location
+            //StringCollection strings = new();
+            //strings.Add(@"C:\Riot Games\League of Legends\Game\League of Legends.exe");
+            //properties.Settings.Default.lol_location = strings;
+            //properties.Settings.Default.Save();
         }
 
         private void buttonMinimize_Click(object sender, RoutedEventArgs e)

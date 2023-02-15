@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Text.Json;
 using System.Diagnostics;
-using System.Text;
 using System.IO;
 using System.Net.Http;
 using System.Windows.Media;
@@ -107,6 +106,38 @@ namespace Tempest
                 }
             }
             return new List<string>();
+        }
+
+        public static void CheckReplayAPI()
+        {
+            if (properties.Settings.Default.lol_location.Count <= 0) { return; }
+
+            foreach (string location in properties.Settings.Default.lol_location)
+            {
+                //string newPath = System.IO.Path.GetFullPath(System.IO.Path.Combine(location, @"..\..\"));
+                EnableReplayAPI(location);
+            }
+        }
+
+        private static void EnableReplayAPI(string configPath)
+        {
+            string newPath = configPath.Split(@"League of Legends\")[0];
+            string path = System.IO.Path.Combine(newPath, @"League of Legends\Config\game.cfg");
+            string text = File.ReadAllText(path);
+
+            if (text.Contains("EnableReplayApi=1")) { return; }
+
+            if (!text.Contains("EnableReplayApi"))
+            {
+                text = text.Replace("[General]", "[General]\r\nEnableReplayApi=1");
+                File.WriteAllText(path, text);
+                Trace.WriteLine("1");
+                return;
+            }
+
+            if (text.Contains("EnableReplayApi=0")) { text = text.Replace("EnableReplayApi=0", "EnableReplayApi=1"); }
+
+            File.WriteAllText(path, text);
         }
 
         private static List<string> GetDirectoriesSafe(string path, string searchPattern)

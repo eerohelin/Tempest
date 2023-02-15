@@ -37,9 +37,9 @@ namespace Tempest.properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public string[] lol_location {
+        public global::System.Collections.Specialized.StringCollection lol_location {
             get {
-                return ((string[])(this["lol_location"]));
+                return ((global::System.Collections.Specialized.StringCollection)(this["lol_location"]));
             }
             set {
                 this["lol_location"] = value;
@@ -72,9 +72,9 @@ namespace Tempest.properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public string[] past_projects {
+        public global::System.Collections.Specialized.StringCollection past_projects {
             get {
-                return ((string[])(this["past_projects"]));
+                return ((global::System.Collections.Specialized.StringCollection)(this["past_projects"]));
             }
             set {
                 this["past_projects"] = value;
