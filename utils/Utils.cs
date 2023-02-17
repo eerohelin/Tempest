@@ -115,7 +115,7 @@ namespace Tempest
             foreach (string location in properties.Settings.Default.lol_location)
             {
                 //string newPath = System.IO.Path.GetFullPath(System.IO.Path.Combine(location, @"..\..\"));
-                EnableReplayAPI(location);
+                //EnableReplayAPI(location);
             }
         }
 

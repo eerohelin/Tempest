@@ -28,13 +28,6 @@
                        Margin="0,0,0,0" 
                        Grid.Row="1"
             >
-                <Button Style="{StaticResource mainButtonStyle}">
-                    <Image Source="/assets/movew.png" 
-                           Width="24" 
-                           Height="24"
-                    >
-                    </Image>
-                </Button>
                 <Button Style="{StaticResource mainButtonStyle}" Click="SwitchTool" Tag="1">
                     <Image Source="/assets/pencilw.png" 
                            Width="24" 
@@ -44,6 +37,20 @@
                 </Button>
                 <Button Style="{StaticResource mainButtonStyle}" Click="SwitchTool" Tag="2">
                     <Image Source="/assets/eraserw.png" 
+                           Width="24" 
+                           Height="24"
+                    >
+                    </Image>
+                </Button>
+                <Button Style="{StaticResource mainButtonStyle}" Click="SwitchTool" Tag="3">
+                    <Image Source="/assets/arroww.png" 
+                           Width="24" 
+                           Height="24"
+                    >
+                    </Image>
+                </Button>
+                <Button Style="{StaticResource mainButtonStyle}">
+                    <Image Source="/assets/movew.png" 
                            Width="24" 
                            Height="24"
                     >
