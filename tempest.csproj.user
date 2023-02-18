@@ -10,6 +10,18 @@
     <Compile Update="views\DrawView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="views\initialization\FolderSelectionView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="views\initialization\InitializationMainWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="views\initialization\LeaguePathsSelectionView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="views\initialization\WelcomeView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="views\ReplayView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -28,6 +40,18 @@
   </ItemGroup>
   <ItemGroup>
     <Page Update="views\DrawView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="views\initialization\FolderSelectionView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="views\initialization\InitializationMainWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="views\initialization\LeaguePathsSelectionView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="views\initialization\WelcomeView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="views\ReplayView.xaml">

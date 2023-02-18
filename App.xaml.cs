@@ -13,5 +13,14 @@ namespace Tempest
     /// </summary>
     public partial class App : Application
     {
+        private void App_Start(object sender, StartupEventArgs e)
+        {
+            if (properties.Settings.Default.initialized)
+            {
+                StartupUri = new Uri(@"/views/SketchWindow.xaml", UriKind.Relative);
+                return;
+            }
+            StartupUri = new Uri(@"/views/initialization/InitializationMainWindow.xaml", UriKind.Relative);
+        }
     }
 }
