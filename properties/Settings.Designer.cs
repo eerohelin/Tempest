@@ -80,5 +80,16 @@ namespace Tempest.properties {
                 this["past_projects"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.Collections.Specialized.StringCollection rofl_paths {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["rofl_paths"]));
+            }
+            set {
+                this["rofl_paths"] = value;
+            }
+        }
     }
 }

@@ -28,13 +28,13 @@
     <Compile Update="views\SketchWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="views\TagFilterPopup.xaml.cs">
+    <Compile Update="components\TagFilterPopup.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="views\Timestamp.xaml.cs">
+    <Compile Update="components\Timestamp.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="views\TimestampTagPopup.xaml.cs">
+    <Compile Update="components\TimestampTagPopup.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
@@ -63,13 +63,13 @@
     <Page Update="views\SketchWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="views\TagFilterPopup.xaml">
+    <Page Update="components\TagFilterPopup.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="views\Timestamp.xaml">
+    <Page Update="components\Timestamp.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="views\TimestampTagPopup.xaml">
+    <Page Update="components\TimestampTagPopup.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

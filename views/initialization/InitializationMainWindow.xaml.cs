@@ -34,6 +34,20 @@ namespace Tempest
         private void Next_Tab(object sender, RoutedEventArgs e)
         {
             if (tabContainer.SelectedIndex == (tabContainer.Items.Count - 1)) { return; }
+            TabItem item = (TabItem)tabContainer.Items[tabContainer.SelectedIndex];
+            if (item.Content is LeaguePathsSelectionView)
+            {
+                LeaguePathsSelectionView content = (LeaguePathsSelectionView)item.Content;
+                if (content.leaguePaths.Count == 0)
+                {
+                    if (MessageBox.Show("A path to a League of Legends.exe is required in order to open Replay files using this program.\nAre you sure you want to continue?",
+                        "Tempest Setup",
+                        MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
+                    {
+                        return;
+                    }
+                }
+            }
             tabContainer.SelectedIndex++;
         }
     }

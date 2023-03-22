@@ -48,7 +48,7 @@ namespace Tempest
         private void AddButton_Clicked(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "League of Legends (*.exe)|*.exe";
+            openFileDialog.Filter = "League of Legends|League of Legends.exe";
             if (openFileDialog.ShowDialog() == true)
             {
                 if (leaguePaths.Contains(openFileDialog.FileName)) { return; }
@@ -58,6 +58,7 @@ namespace Tempest
 
         private void DeleteButton_Clicked(object sender, RoutedEventArgs e)
         {
+            if (leaguePathsContainer.Items.Count <= 0) { return; }
             leaguePaths.RemoveAt(leaguePathsContainer.SelectedIndex);
         }
     }
