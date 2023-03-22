@@ -127,7 +127,6 @@ namespace Tempest
         {
             var response = await Replay.getPosition();
             if (response == null) { return; }
-
             int currentTime = (int)(double)response["time"];
 
             TimeSpan parsedTime = TimeSpan.FromSeconds(currentTime);
@@ -185,6 +184,12 @@ namespace Tempest
         private void onClearButtonClick(object sender, RoutedEventArgs e)
         {
             timestampContainer.Children.Clear();
+        }
+
+        private void onOpenReplayButtonClick(object sender, RoutedEventArgs e)
+        {
+            OpenReplayView replayView = new();
+            replayView.ShowDialog();
         }
     }
 }

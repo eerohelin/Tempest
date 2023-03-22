@@ -1,0 +1,15 @@
+﻿<StackPanel x:Class="Tempest.ReplayComponent"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Tempest"
+             mc:Ignorable="d"
+             Height="120"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Label x:Name="ROFLName"/>
+    <StackPanel Orientation="Horizontal" x:Name="containerStackPanel">
+        <WrapPanel x:Name="playerContainer" Width="210" Height="90"></WrapPanel>
+        <Button Cursor="Hand" Click="PlayReplayButton_Clicked">Play</Button>
+    </StackPanel>
+</StackPanel>

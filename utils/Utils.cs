@@ -28,7 +28,7 @@ namespace Tempest
             try
             {
                 result = await client.GetAsync(url);
-            } catch (HttpRequestException)
+            } catch (HttpRequestException e)
             {
                 // TODO Implement informing the user of the reason for the exception
                 return null;
@@ -181,7 +181,7 @@ namespace Tempest
                 {
                     process.StartInfo.WorkingDirectory = @"C:\Riot Games\League of Legends\Game";
                     process.StartInfo.FileName = @"C:\Riot Games\League of Legends\Game\League of Legends.exe";
-                    process.StartInfo.Arguments = @$"""{roflPath}""";
+                    process.StartInfo.Arguments = @$"""{roflPath}"" ""-GameBaseDir=C:\Riot Games\League of Legends""";
                     process.Start();
                     // process.WaitForExit();
                 }

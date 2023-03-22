@@ -13,7 +13,8 @@
             </Grid.RowDefinitions>
 
             <StackPanel Grid.Row="0" HorizontalAlignment="Center">
-                <Button Style="{StaticResource mainButtonStyle}" 
+                <Button Style="{StaticResource mainButtonStyle}"
+                        Click="onOpenReplayButtonClick"
                         Width="200">
                     Open Replay File
                 </Button>

@@ -7,6 +7,9 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="components\ReplayComponent.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="views\DrawView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -20,6 +23,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="views\initialization\WelcomeView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="views\OpenReplayView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="views\ReplayView.xaml.cs">
@@ -39,6 +45,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Page Update="components\ReplayComponent.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="views\DrawView.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -52,6 +61,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="views\initialization\WelcomeView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="views\OpenReplayView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="views\ReplayView.xaml">
