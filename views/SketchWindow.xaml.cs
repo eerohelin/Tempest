@@ -129,6 +129,9 @@ namespace Tempest
                 case 3:
                     Cursor = Cursors.Cross;
                     break;
+                case 4:
+                    Cursor = Cursors.Arrow;
+                    break;
             }
         }
 

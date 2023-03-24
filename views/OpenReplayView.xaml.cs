@@ -27,9 +27,11 @@ namespace Tempest
     {
 
         public static string version = string.Empty;
-        public OpenReplayView()
+        public ReplayView _parent;
+        public OpenReplayView(ReplayView parent)
         {
             InitializeComponent();
+            _parent = parent;
 
             Loaded += OpenReplayView_Loaded;
 

@@ -235,7 +235,8 @@ namespace Tempest
             };
             PolyBezierSegment segment = new()
             {
-                Points = new PointCollection(points)
+                Points = new PointCollection(points),
+                IsSmoothJoin = true
             };
 
             figure.Segments.Add(segment);

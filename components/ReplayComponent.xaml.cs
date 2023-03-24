@@ -41,25 +41,45 @@ namespace Tempest
             ROFLName.Content = System.IO.Path.GetFileName(_filePath);
             foreach(Summoner summoner in _replay.statsJson)
             {
-                playerContainer.Children.Add(ChampionImage(summoner.SKIN));
+                if (_owner._parent.championImageCache.ContainsKey(summoner.SKIN))
+                {
+                    playerContainer.Children.Add(CreateImage(_owner._parent.championImageCache[summoner.SKIN]));
+                }
+                else
+                {
+                    BitmapImage championBitmap = LoadChampionImage(summoner.SKIN);
+                    _owner._parent.championImageCache.Add(summoner.SKIN, championBitmap);
+
+                    Image championImage = CreateImage(championBitmap);
+                    playerContainer.Children.Add(championImage);
+                }
             }
             
         }
 
-        private Image ChampionImage(string ChampionName)
+        private Image CreateImage(BitmapImage bitmapImage)
         {
             var image = new Image();
+
+            image.Source = bitmapImage;
+            image.Width = 40;
+            image.Height = 40;
+
+            return image;
+        }
+
+        private BitmapImage LoadChampionImage(string ChampionName)
+        {
             var fullFilePath = $"https://ddragon.leagueoflegends.com/cdn/{OpenReplayView.version}/img/champion/{ChampionName}.png";
+
 
             BitmapImage bitmap = new BitmapImage();
             bitmap.BeginInit();
             bitmap.UriSource = new Uri(fullFilePath, UriKind.Absolute);
+            bitmap.CacheOption = BitmapCacheOption.OnLoad;
             bitmap.EndInit();
 
-            image.Source = bitmap;
-            image.Width = 40;
-            image.Height = 40;
-            return image;
+            return bitmap;
         }
 
         private void PlayReplayButton_Clicked(object sender, RoutedEventArgs e)

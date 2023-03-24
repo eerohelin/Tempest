@@ -32,6 +32,7 @@ namespace Tempest
         public static BindingList<string> Tags = new();
         public static StackPanel tsContainer = new();
         public static TagFilterPopup tagFilterPopup = new();
+        public Dictionary<string, BitmapImage> championImageCache = new();
 
         public ReplayView()
         {
@@ -188,7 +189,7 @@ namespace Tempest
 
         private void onOpenReplayButtonClick(object sender, RoutedEventArgs e)
         {
-            OpenReplayView replayView = new();
+            OpenReplayView replayView = new(this);
             replayView.ShowDialog();
         }
     }

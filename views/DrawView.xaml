@@ -49,7 +49,7 @@
                     >
                     </Image>
                 </Button>
-                <Button Style="{StaticResource mainButtonStyle}">
+                <Button Style="{StaticResource mainButtonStyle}" Click="SwitchTool" Tag="4">
                     <Image Source="/assets/movew.png" 
                            Width="24" 
                            Height="24"
