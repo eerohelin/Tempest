@@ -70,7 +70,7 @@ namespace Tempest
 
         private BitmapImage LoadChampionImage(string ChampionName)
         {
-            var fullFilePath = $"https://ddragon.leagueoflegends.com/cdn/{OpenReplayView.version}/img/champion/{ChampionName}.png";
+            var fullFilePath = $"https://cdn.communitydragon.org/{OpenReplayView.version}/champion/{ChampionName}/square";
 
 
             BitmapImage bitmap = new BitmapImage();
