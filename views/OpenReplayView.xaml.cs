@@ -54,6 +54,7 @@ namespace Tempest
             foreach (string replay in replayPaths)
             {
                 ReplayObject replayObject = ROFLHandler.ParseROFL(replay);
+                if (replayObject is null) { continue; }
                 ReplayComponent replayComponent = new(replayObject, replay, this);
                 replayContainer.Children.Add(replayComponent);
             }
