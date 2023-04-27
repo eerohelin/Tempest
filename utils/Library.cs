@@ -33,8 +33,6 @@ namespace Tempest
             PreviewMouseUp += PlayerMouseUp;
             Services.mapImage.OpacityChanged += UpdateOpacity;
 
-            Grid containerChild = new();
-
             Label roleText = new()
             {
                 Content = role,
@@ -42,6 +40,17 @@ namespace Tempest
                 HorizontalAlignment = HorizontalAlignment.Center
             };
 
+            Child = roleText;
+
+            Panel.SetZIndex(this, 10000);
+
+            CreateVision();
+
+            Opacity = 0;
+        }
+
+        private void CreateVision()
+        {
             EllipseGeometry ellipseGeometry = new EllipseGeometry();
             ellipseGeometry.RadiusX = 60;
             ellipseGeometry.RadiusY = 60;
@@ -49,14 +58,6 @@ namespace Tempest
             _ellipseGeometry = ellipseGeometry;
 
             SketchWindow.UiState.clipGroup.Children.Add(_ellipseGeometry);
-
-            containerChild.Children.Add(roleText);
-
-            Child = containerChild;
-
-            Panel.SetZIndex(this, 10000);
-
-            Opacity = 0;
         }
 
         public void LoadPosition()
@@ -66,8 +67,8 @@ namespace Tempest
 
             Point position = new Point(Canvas.GetLeft(this), Canvas.GetTop(this));
 
-            double relativeX = position.X - imageLeft + 15;
-            double relativeY = position.Y - imageTop + 15;
+            double relativeX = position.X - imageLeft + (Width / 2);
+            double relativeY = position.Y - imageTop + (Height / 2);
             
             _ellipseGeometry.Center = new Point(relativeX, relativeY);
         }
@@ -106,6 +107,108 @@ namespace Tempest
                 LoadPosition();
                 e.Handled = true;
             }
+        }
+    }
+
+    internal class Ward : Border
+    {
+
+        public bool moving = false;
+        public Canvas? _canvas;
+        private EllipseGeometry _ellipseGeometry;
+        public Ward()
+        {
+            Opacity = Services.mapImage.Opacity;
+            BorderBrush = new SolidColorBrush(Color.FromArgb(200, 255, 255, 255));
+            Background = Brushes.Transparent;
+            BorderThickness = new Thickness(1, 1, 1, 1);
+            Width = 120;
+            Height = 120;
+            CornerRadius = new CornerRadius(90);
+
+            Services.mapImage.OpacityChanged += UpdateOpacity;
+
+            Panel.SetZIndex(this, 10000);
+
+            CreateVision();
+
+
+            Border child = new() { Width = 20, Height = 20, CornerRadius = new CornerRadius(50), Background = Brushes.Blue };
+
+            child.PreviewMouseDown += WardMouseDown;
+            child.PreviewMouseUp += WardMouseUp;
+            child.MouseEnter += WardMouseEnter;
+
+            Child = child;
+        }
+
+        private void CreateVision()
+        {
+            EllipseGeometry ellipseGeometry = new EllipseGeometry();
+            ellipseGeometry.RadiusX = 60;
+            ellipseGeometry.RadiusY = 60;
+
+            _ellipseGeometry = ellipseGeometry;
+
+            SketchWindow.UiState.clipGroup.Children.Add(_ellipseGeometry);
+        }
+
+        public void LoadPosition()
+        {
+            double imageLeft = Canvas.GetLeft(Services.mapImage);
+            double imageTop = Canvas.GetTop(Services.mapImage);
+
+            Point position = new Point(Canvas.GetLeft(this), Canvas.GetTop(this));
+
+            double relativeX = position.X - imageLeft + (Width / 2);
+            double relativeY = position.Y - imageTop + (Height / 2);
+
+            _ellipseGeometry.Center = new Point(relativeX, relativeY);
+        }
+
+        public Canvas canvas
+        {
+            set { _canvas = value; _canvas.PreviewMouseMove += WardMouseMove; }
+        }
+
+        private void WardMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (Services.tool == 2) { SketchWindow.UiState.Remove(this); return; }
+            if (Services.tool != 4) { return; }
+            moving = true;
+            Mouse.Capture(Child);
+        }
+
+        private void WardMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            moving = false;
+            Mouse.Capture(null);
+        }
+
+        private void UpdateOpacity(object? sender, EventArgs e)
+        {
+            Opacity = Services.mapImage.Opacity;
+        }
+
+        private void WardMouseMove(object sender, MouseEventArgs e)
+        {
+            if (moving)
+            {
+                Canvas.SetTop(this, e.GetPosition(_canvas).Y - this.Width / 2);
+                Canvas.SetLeft(this, e.GetPosition(_canvas).X - this.Width / 2);
+
+                LoadPosition();
+                e.Handled = true;
+            }
+        }
+
+        private void WardMouseEnter(object sender, MouseEventArgs e)
+        {
+            if (Services.tool == 2 && e.LeftButton == MouseButtonState.Pressed)
+            {
+                SketchWindow.UiState.Remove(this);
+            }
+
         }
     }
 

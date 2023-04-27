@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -90,7 +91,7 @@ namespace Tempest
                 sketchCanvas.Children.CopyTo(tempArray, 0);
                 foreach (UIElement Element in tempArray)
                 {
-                    if (Element is Line || Element is Path || Element is Polyline || Element is Canvas)
+                    if (Element is Line || Element is Path || Element is Polyline || Element is Canvas || Element is Ward)
                     {
                         sketchCanvas.Children.Remove(Element);
                     }
@@ -115,6 +116,19 @@ namespace Tempest
                 foreach (UIElement Element in new List<UIElement>(CurrentUiState))
                 {
                     if (Element is Line || Element is Path || Element is Polyline || Element is Canvas)
+                    {
+                        CurrentUiState.Remove(Element);
+                    }
+                }
+                ReloadUI();
+            }
+
+            public static void ClearWards()
+            {
+                UiStates.Add(new List<UIElement>(CurrentUiState));
+                foreach (UIElement Element in new List<UIElement>(CurrentUiState))
+                {
+                    if (Element is Ward)
                     {
                         CurrentUiState.Remove(Element);
                     }
@@ -152,10 +166,13 @@ namespace Tempest
                 case 4:
                     Cursor = Cursors.Arrow;
                     break;
+                case 5:
+                    Cursor = Cursors.Arrow;
+                    break;
             }
         }
 
-        private void Create_FogOfWar(double mapPosition)
+        private void Create_FogOfWar()
         {
             RectangleGeometry rect = new RectangleGeometry(new Rect(0, 0, sketchCanvas.ActualHeight - 50, sketchCanvas.ActualHeight - 50));
             UiState.combinedClip.Geometry1 = rect;
@@ -192,7 +209,21 @@ namespace Tempest
             Panel.SetZIndex(rectangle, -2);
             sketchCanvas.Children.Add(rectangle);
 
-            Create_FogOfWar(left);
+            Create_FogOfWar();
+        }
+
+        private Ward Create_Ward(Point point)
+        {
+            Ward ward = new()
+            {
+                canvas = sketchCanvas
+            };
+
+            Canvas.SetLeft(ward, point.X - (ward.Width / 2));
+            Canvas.SetTop(ward, point.Y - (ward.Height / 2));
+            UiState.Add(ward);
+            ward.LoadPosition();
+            return ward;
         }
 
         private Player Create_Player(string role)
@@ -203,7 +234,7 @@ namespace Tempest
                 Height = 30,
                 canvas = sketchCanvas,
                 Background = Brushes.Red,
-                CornerRadius = new CornerRadius(50),
+                CornerRadius = new CornerRadius(50)
             };
             Canvas.SetLeft(player, 500);
             Canvas.SetTop(player, 500);
@@ -219,7 +250,7 @@ namespace Tempest
             Line line = new()
             {
                 Stroke = brush,
-                StrokeThickness = 4,
+                StrokeThickness = Services.brushSize,
                 StrokeEndLineCap = PenLineCap.Round,
                 StrokeStartLineCap = PenLineCap.Round,
                 X1 = currentPoint.X,
@@ -393,6 +424,11 @@ namespace Tempest
                 case 3:
                     currentPoint = e.GetPosition(this);
                     Mouse.Capture(this);
+                    break;
+                case 5:
+                    Ward ward = Create_Ward(e.GetPosition(this));
+                    Mouse.Capture(ward.Child);
+                    ward.moving = true;
                     break;
             }
         }

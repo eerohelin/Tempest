@@ -42,6 +42,7 @@ namespace Tempest
         private void ClearButton_Click(object sender, RoutedEventArgs e)
         {
             SketchWindow.UiState.ClearLines();
+            SketchWindow.UiState.ClearWards();
         }
 
         private void MapToggleButton_Check(object sender, RoutedEventArgs e)

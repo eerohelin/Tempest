@@ -16,7 +16,7 @@ namespace Tempest
 
         public static event EventHandler? ToolChanged;
 
-        private static int _tool = 1; // 1 = Draw | 2 = Eraser | 3 = Arrow | 4 = Move
+        private static int _tool = 1; // 1 = Draw | 2 = Eraser | 3 = Arrow | 4 = Move | 5 = Ward
 
         public static Color brushColor = Color.FromRgb(255,255,255);
         public static MapImage mapImage = new();

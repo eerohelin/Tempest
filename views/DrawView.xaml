@@ -87,8 +87,8 @@
                     >
                     </Image>
                 </RadioButton>
-                <RadioButton Style="{StaticResource mainRadioButtonStyle}" IsEnabled="False" GroupName="tool">
-                    <Image Source="/assets/wardw.png" 
+                <RadioButton Style="{StaticResource mainRadioButtonStyle}" Click="SwitchTool" Tag="5" IsEnabled="False" GroupName="tool">
+                    <Image Source="/assets/eyew.png" 
                            Width="24" 
                            Height="24"
                            Opacity=".3"
