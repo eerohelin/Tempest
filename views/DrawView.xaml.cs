@@ -47,10 +47,12 @@ namespace Tempest
             if (mapOn)
             {
                 Services.mapImage._Opacity = 0;
+                SketchWindow.UiState.fogOfWar.Opacity = 0;
                 mapOn = false;
                 return;
             }
             Services.mapImage._Opacity = 1;
+            SketchWindow.UiState.fogOfWar.Opacity = .5;
             mapOn = true;
         }
 

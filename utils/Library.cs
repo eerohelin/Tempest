@@ -1,18 +1,23 @@
 ﻿using System;
 using System.Buffers;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Ribbon;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Xml;
+using System.Xml.Linq;
 
 namespace Tempest
 {
@@ -20,12 +25,15 @@ namespace Tempest
     {
         public Canvas? _canvas;
         private bool moving = false;
+        private EllipseGeometry _ellipseGeometry;
 
         public Player(string role)
         {
             PreviewMouseDown += PlayerMouseDown;
             PreviewMouseUp += PlayerMouseUp;
             Services.mapImage.OpacityChanged += UpdateOpacity;
+
+            Grid containerChild = new();
 
             Label roleText = new()
             {
@@ -34,11 +42,34 @@ namespace Tempest
                 HorizontalAlignment = HorizontalAlignment.Center
             };
 
-            Child = roleText;
+            EllipseGeometry ellipseGeometry = new EllipseGeometry();
+            ellipseGeometry.RadiusX = 60;
+            ellipseGeometry.RadiusY = 60;
+
+            _ellipseGeometry = ellipseGeometry;
+
+            SketchWindow.UiState.clipGroup.Children.Add(_ellipseGeometry);
+
+            containerChild.Children.Add(roleText);
+
+            Child = containerChild;
 
             Panel.SetZIndex(this, 10000);
 
             Opacity = 0;
+        }
+
+        public void LoadPosition()
+        {
+            double imageLeft = Canvas.GetLeft(Services.mapImage);
+            double imageTop = Canvas.GetTop(Services.mapImage);
+
+            Point position = new Point(Canvas.GetLeft(this), Canvas.GetTop(this));
+
+            double relativeX = position.X - imageLeft + 15;
+            double relativeY = position.Y - imageTop + 15;
+            
+            _ellipseGeometry.Center = new Point(relativeX, relativeY);
         }
 
         private void UpdateOpacity(object? sender, EventArgs e)
@@ -71,6 +102,8 @@ namespace Tempest
             {
                 Canvas.SetTop(this, e.GetPosition(_canvas).Y - this.Width / 2);
                 Canvas.SetLeft(this, e.GetPosition(_canvas).X - this.Width / 2);
+
+                LoadPosition();
                 e.Handled = true;
             }
         }
