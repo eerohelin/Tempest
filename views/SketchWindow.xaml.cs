@@ -129,6 +129,9 @@ namespace Tempest
                     case "Off":
                         UiState.fogOfWar.Visibility = Visibility.Hidden;
                         break;
+                    case "On":
+                        UiState.fogOfWar.Visibility = Visibility.Visible;
+                        break;
                 }
             }
         }
@@ -160,6 +163,7 @@ namespace Tempest
 
             UiState.fogOfWar.Clip = UiState.combinedClip;
             UiState.fogOfWar.Opacity = 0;
+            UiState.fogOfWar.Visibility = Visibility.Hidden;
         }
 
         private void Create_Map()

@@ -14,10 +14,11 @@
 
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="35"></RowDefinition>
-                <RowDefinition Height="160"></RowDefinition>
+                <RowDefinition Height="15"></RowDefinition>
                 <RowDefinition Height="100"></RowDefinition>
-                <RowDefinition Height="50"></RowDefinition>
+                <RowDefinition Height="100"></RowDefinition>
+                <RowDefinition Height="100"></RowDefinition>
+                <RowDefinition Height="25"></RowDefinition>
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
@@ -28,46 +29,27 @@
                        Margin="0,0,0,0" 
                        Grid.Row="1"
             >
-                <Button Style="{StaticResource mainButtonStyle}" Click="SwitchTool" Tag="1">
+                <RadioButton Style="{StaticResource mainRadioButtonStyle}" Click="SwitchTool" Tag="1" GroupName="tool" IsChecked="True">
                     <Image Source="/assets/pencilw.png" 
                            Width="24" 
                            Height="24"
                     >
                     </Image>
-                </Button>
-                <Button Style="{StaticResource mainButtonStyle}" Click="SwitchTool" Tag="2">
+                </RadioButton>
+                <RadioButton Style="{StaticResource mainRadioButtonStyle}" Click="SwitchTool" Tag="2" GroupName="tool">
                     <Image Source="/assets/eraserw.png" 
                            Width="24" 
                            Height="24"
                     >
                     </Image>
-                </Button>
-                <Button Style="{StaticResource mainButtonStyle}" Click="SwitchTool" Tag="3">
+                </RadioButton>
+                <RadioButton Style="{StaticResource mainRadioButtonStyle}" Click="SwitchTool" Tag="3" GroupName="tool">
                     <Image Source="/assets/arroww.png" 
                            Width="24" 
                            Height="24"
                     >
                     </Image>
-                </Button>
-                <Button Style="{StaticResource mainButtonStyle}" Click="SwitchTool" Tag="4">
-                    <Image Source="/assets/movew.png" 
-                           Width="24" 
-                           Height="24"
-                    >
-                    </Image>
-                </Button>
-                <Button Style="{StaticResource mainButtonStyle}" Click="ToggleMap">
-                    <Image Source="/assets/mapw.png" 
-                           Width="24" Height="24">
-                    </Image>
-                </Button>
-                <Button Style="{StaticResource mainButtonStyle}">
-                    <Image Source="/assets/wardw.png" 
-                           Width="24" 
-                           Height="24"
-                    >
-                    </Image>
-                </Button>
+                </RadioButton>
                 <Button Style="{StaticResource mainButtonStyle}" Click="UndoButton_Click">
                     <Image Source="/assets/undow.png" 
                            Width="24" 
@@ -91,7 +73,39 @@
                 </Button>
             </WrapPanel>
 
-            <WrapPanel Grid.Row="2" HorizontalAlignment="Center">
+            <WrapPanel Grid.Row="2" HorizontalAlignment="Center" x:Name="mapButtons">
+                <ToggleButton Style="{StaticResource mainToggleButtonStyle}" Checked="MapToggleButton_Check" Unchecked="MapToggleButton_Uncheck">
+                    <Image Source="/assets/mapw.png" 
+                           Width="24" Height="24">
+                    </Image>
+                </ToggleButton>
+                <RadioButton Style="{StaticResource mainRadioButtonStyle}" Click="SwitchTool" Tag="4" IsEnabled="False" GroupName="tool">
+                    <Image Source="/assets/movew.png" 
+                           Width="24" 
+                           Height="24"
+                           Opacity=".3"
+                    >
+                    </Image>
+                </RadioButton>
+                <RadioButton Style="{StaticResource mainRadioButtonStyle}" IsEnabled="False" GroupName="tool">
+                    <Image Source="/assets/wardw.png" 
+                           Width="24" 
+                           Height="24"
+                           Opacity=".3"
+                    >
+                    </Image>
+                </RadioButton>
+                <ToggleButton Style="{StaticResource mainToggleButtonStyle}" IsEnabled="False" Checked="FogOfWarButton_Check" Unchecked="FogOfWarButton_Uncheck">
+                    <Image Source="/assets/wardw.png" 
+                           Width="24" 
+                           Height="24"
+                           Opacity=".3"
+                    >
+                    </Image>
+                </ToggleButton>
+            </WrapPanel>
+
+            <WrapPanel Grid.Row="3" HorizontalAlignment="Center">
                 <Button Style="{StaticResource mainButtonStyle}" Width="36" Background="#ff8c00"></Button>
                 <Button Style="{StaticResource mainButtonStyle}" Width="36" Background="#ffcc00"></Button>
                 <Button Style="{StaticResource mainButtonStyle}" Width="36" Background="#00ff2a"></Button>
@@ -102,7 +116,7 @@
                 <Button Style="{StaticResource mainButtonStyle}" Width="36" Background="#ff0033"></Button>
             </WrapPanel>
 
-            <StackPanel Grid.Row="3" Margin="20,2,20,2">
+            <StackPanel Grid.Row="4" Margin="20,2,20,2">
                 <Slider Style="{StaticResource Horizontal_Slider}" 
                         Maximum="100" 
                         TickPlacement="BottomRight" 
@@ -111,7 +125,7 @@
                 </Slider>
             </StackPanel>
 
-            <StackPanel Orientation="Vertical" Grid.Row="4" HorizontalAlignment="Center">
+            <StackPanel Orientation="Vertical" Grid.Row="5" HorizontalAlignment="Center">
                 <TextBlock Foreground="WhiteSmoke" 
                            Margin="5" 
                            FontSize="20" 
