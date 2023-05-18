@@ -27,10 +27,17 @@ namespace Tempest
             InitializeComponent();
 
             // Test add to lol_location
-            //StringCollection strings = new();
-            //strings.Add(@"C:\Riot Games\League of Legends\Game\League of Legends.exe");
+            //StringCollection strings = properties.Settings.Default.lol_location;
+            //strings.Add(@"C:\Riot Games\League of Legends (Tournament Realm 1)\Game\League of Legends.exe");
             //properties.Settings.Default.lol_location = strings;
             //properties.Settings.Default.Save();
+
+            Loaded += MainWindow_Loaded;
+        }
+
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            LeaguePaths.LoadLeagueVersions();
         }
 
         private void buttonMinimize_Click(object sender, RoutedEventArgs e)

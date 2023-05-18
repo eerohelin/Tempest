@@ -153,6 +153,11 @@ namespace Tempest
             SketchWindow.UiState.clipGroup.Children.Add(_ellipseGeometry);
         }
 
+        public void DeleteVision()
+        {
+            SketchWindow.UiState.clipGroup.Children.Remove(_ellipseGeometry);
+        }
+
         public void LoadPosition()
         {
             double imageLeft = Canvas.GetLeft(Services.mapImage);

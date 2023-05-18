@@ -25,6 +25,7 @@ namespace Tempest
         private ReplayObject _replay;
         private string _filePath;
         private OpenReplayView _owner;
+        private string _roflVersion;
         public ReplayComponent(ReplayObject replay, string filePath, OpenReplayView owner)
         {
             InitializeComponent();
@@ -38,7 +39,6 @@ namespace Tempest
 
         private void ReplayComponent_Loaded(object sender, RoutedEventArgs e)
         {
-            ROFLName.Content = System.IO.Path.GetFileName(_filePath);
             foreach(Summoner summoner in _replay.statsJson)
             {
                 if (_owner._parent.championImageCache.ContainsKey(summoner.SKIN))
@@ -54,7 +54,40 @@ namespace Tempest
                     playerContainer.Children.Add(championImage);
                 }
             }
-            
+
+            var parsedROFLVersion = _replay.gameVersion.ToString().Split('.').Take(2);
+            string roflVersion = string.Join(".", parsedROFLVersion);
+            _roflVersion = roflVersion;
+
+            ROFLName.Content = System.IO.Path.GetFileName(_filePath);
+            ROFLVersion.Content = _roflVersion;
+
+            CheckLeagueVersion();
+        }
+
+        public void CheckLeagueVersion()
+        {
+            if (!Services.leagueVersions.ContainsKey(_roflVersion))
+            {
+                ROFLVersion.Foreground = new SolidColorBrush(Colors.Red);
+                ROFLVersion.ToolTip = "No League version found capable of opening this version";
+                playButton.IsEnabled = false;
+                ReplayAPIButton.Visibility = Visibility.Collapsed;
+            }
+            else if (!LeaguePaths.CheckReplayAPI(Services.leagueVersions[_roflVersion]))
+            {
+                ROFLVersion.Foreground = new SolidColorBrush(Colors.Yellow);
+                ROFLVersion.ToolTip = "Replay API not enabled for this League version. Features such as timestamps will not work.";
+                playButton.IsEnabled = true;
+                ReplayAPIButton.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                ROFLVersion.Foreground = new SolidColorBrush(Colors.LightGreen);
+                ROFLVersion.ToolTip = Services.leagueVersions[_roflVersion];
+                playButton.IsEnabled = true;
+                ReplayAPIButton.Visibility = Visibility.Collapsed;
+            }
         }
 
         private Image CreateImage(BitmapImage bitmapImage)
@@ -86,6 +119,12 @@ namespace Tempest
         {
             ROFLHandler.OpenROFL(_filePath);
             _owner.Close();
+        }
+
+        private void EnableReplayAPI_Click(object sender, RoutedEventArgs e)
+        {
+            LeaguePaths.EnableReplayAPI(Services.leagueVersions[_roflVersion]);
+            _owner.CheckComponents();
         }
     }
 }

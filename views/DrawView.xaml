@@ -88,7 +88,7 @@
                     </Image>
                 </RadioButton>
                 <RadioButton Style="{StaticResource mainRadioButtonStyle}" Click="SwitchTool" Tag="5" IsEnabled="False" GroupName="tool">
-                    <Image Source="/assets/eyew.png" 
+                    <Image Source="/assets/wardw.png" 
                            Width="24" 
                            Height="24"
                            Opacity=".3"
@@ -96,7 +96,7 @@
                     </Image>
                 </RadioButton>
                 <ToggleButton Style="{StaticResource mainToggleButtonStyle}" IsEnabled="False" Checked="FogOfWarButton_Check" Unchecked="FogOfWarButton_Uncheck">
-                    <Image Source="/assets/wardw.png" 
+                    <Image Source="/assets/eyew.png" 
                            Width="24" 
                            Height="24"
                            Opacity=".3"

@@ -7,9 +7,13 @@
              mc:Ignorable="d"
              Height="120"
              d:DesignHeight="450" d:DesignWidth="800">
-    <Label x:Name="ROFLName"/>
+    <StackPanel Orientation="Horizontal" x:Name="titleContainer">
+        <Label x:Name="ROFLName"/>
+        <Label x:Name="ROFLVersion"/>
+        <Button Height="20" Width="100" Click="EnableReplayAPI_Click" x:Name="ReplayAPIButton" Cursor="Hand">Enable Replay API</Button>
+    </StackPanel>
     <StackPanel Orientation="Horizontal" x:Name="containerStackPanel">
         <WrapPanel x:Name="playerContainer" Width="210" Height="90"></WrapPanel>
-        <Button Cursor="Hand" Click="PlayReplayButton_Clicked">Play</Button>
+        <Button Cursor="Hand" Click="PlayReplayButton_Clicked" x:Name="playButton">Play</Button>
     </StackPanel>
 </StackPanel>

@@ -26,5 +26,7 @@ namespace Tempest
         }
         public static bool lineSmoothing = true;
         public static double brushSize = 4;
+
+        public static Dictionary<string, string> leagueVersions = new(); // Version : Path to League.exe
     }
 }

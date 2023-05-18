@@ -74,5 +74,13 @@ namespace Tempest
             JsonNode objects = JsonArray.Parse(json);
             return objects[0].ToString();
         }
+
+        public void CheckComponents()
+        {
+            foreach (ReplayComponent replayComponent in replayContainer.Children)
+            {
+                replayComponent.CheckLeagueVersion();
+            }
+        }
     }
 }

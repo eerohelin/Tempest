@@ -120,16 +120,12 @@ namespace Tempest
                         CurrentUiState.Remove(Element);
                     }
                 }
-                ReloadUI();
-            }
-
-            public static void ClearWards()
-            {
-                UiStates.Add(new List<UIElement>(CurrentUiState));
                 foreach (UIElement Element in new List<UIElement>(CurrentUiState))
                 {
                     if (Element is Ward)
                     {
+                        Ward ward = (Ward)Element;
+                        ward.DeleteVision();
                         CurrentUiState.Remove(Element);
                     }
                 }

@@ -98,7 +98,7 @@ namespace Tempest
                     timestamp.Visibility = Visibility.Visible;
                     continue;
                 }
-                timestamp.Visibility = Visibility.Hidden;
+                timestamp.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -127,7 +127,7 @@ namespace Tempest
         private async void onGetCurrentTimeButtonClick(object sender, RoutedEventArgs e)
         {
             var response = await Replay.getPosition();
-            if (response == null) { return; }
+            if (response is null || !response.ContainsKey("time")) { return; }
             int currentTime = (int)(double)response["time"];
 
             TimeSpan parsedTime = TimeSpan.FromSeconds(currentTime);

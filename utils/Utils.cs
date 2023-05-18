@@ -108,21 +108,20 @@ namespace Tempest
             return new List<string>();
         }
 
-        public static void CheckReplayAPI()
+        public static bool CheckReplayAPI(string location)
         {
-            if (properties.Settings.Default.lol_location.Count <= 0) { return; }
+            string newPath = location.Split(@"Game\")[0];
+            string path = System.IO.Path.Combine(newPath, @"Config\game.cfg");
+            string text = File.ReadAllText(path);
 
-            foreach (string location in properties.Settings.Default.lol_location)
-            {
-                //string newPath = System.IO.Path.GetFullPath(System.IO.Path.Combine(location, @"..\..\"));
-                //EnableReplayAPI(location);
-            }
+            if (!text.Contains("EnableReplayApi") || text.Contains("EnableReplayApi=0")) { return false; }
+            return true;
         }
 
-        private static void EnableReplayAPI(string configPath)
+        public static void EnableReplayAPI(string location)
         {
-            string newPath = configPath.Split(@"League of Legends\")[0];
-            string path = System.IO.Path.Combine(newPath, @"League of Legends\Config\game.cfg");
+            string newPath = location.Split(@"Game\")[0];
+            string path = System.IO.Path.Combine(newPath, @"Config\game.cfg");
             string text = File.ReadAllText(path);
 
             if (text.Contains("EnableReplayApi=1")) { return; }
@@ -131,13 +130,26 @@ namespace Tempest
             {
                 text = text.Replace("[General]", "[General]\r\nEnableReplayApi=1");
                 File.WriteAllText(path, text);
-                Trace.WriteLine("1");
                 return;
             }
 
             if (text.Contains("EnableReplayApi=0")) { text = text.Replace("EnableReplayApi=0", "EnableReplayApi=1"); }
 
             File.WriteAllText(path, text);
+        }
+
+        public static void LoadLeagueVersions()
+        {
+            if (properties.Settings.Default.lol_location.Count <= 0) { return; }
+            foreach (string location in properties.Settings.Default.lol_location)
+            {
+                //string newPath = System.IO.Path.GetFullPath(System.IO.Path.Combine(location, @"..\..\"));
+                //EnableReplayAPI(location);
+                var versionInfo = FileVersionInfo.GetVersionInfo(location);
+                string version = versionInfo.FileVersion ?? throw new ArgumentException();
+                string parsedLeagueVersion = $"{version.Split(".")[0]}.{version.Split(".")[1]}";
+                Services.leagueVersions.Add(parsedLeagueVersion, location);
+            }
         }
 
         private static List<string> GetDirectoriesSafe(string path, string searchPattern)
@@ -163,32 +175,26 @@ namespace Tempest
             ReplayObject replay = ParseROFL(roflPath);
             var parsedROFLVersion = replay.gameVersion.ToString().Split('.').Take(2);
             string roflVersion = string.Join(".", parsedROFLVersion);
+            if (!Services.leagueVersions.ContainsKey(roflVersion)) { Trace.WriteLine("No league version"); return; }
 
-            // TODO: Loop through all possible League.exe's in the settings.json file and compare their versions to the rofl's version
-            var versionInfo = FileVersionInfo.GetVersionInfo(@"C:\Riot Games\League of Legends\Game\League of Legends.exe");
-            string version = versionInfo.FileVersion ?? throw new ArgumentException();
-            string parsedLeagueVersion = $"{version.Split(".")[0]}.{version.Split(".")[1]}";
-
-            if (roflVersion != parsedLeagueVersion)
-            {
-                Console.WriteLine("Incorrect rofl version");
-                return;
-            }
+            string correctLeaguePath = Services.leagueVersions[roflVersion];
+            string leagueGamePath = System.IO.Path.GetFullPath(System.IO.Path.Combine(correctLeaguePath, @".."));
+            string workingDirPath = System.IO.Path.GetFullPath(System.IO.Path.Combine(correctLeaguePath, @"..\.."));
 
             try
             {
                 using (Process process = new Process())
                 {
-                    process.StartInfo.WorkingDirectory = @"C:\Riot Games\League of Legends\Game";
-                    process.StartInfo.FileName = @"C:\Riot Games\League of Legends\Game\League of Legends.exe";
-                    process.StartInfo.Arguments = @$"""{roflPath}"" ""-GameBaseDir=C:\Riot Games\League of Legends""";
+                    process.StartInfo.WorkingDirectory = leagueGamePath;
+                    process.StartInfo.FileName = correctLeaguePath;
+                    process.StartInfo.Arguments = @$"""{roflPath}"" ""-GameBaseDir={workingDirPath}""";
                     process.Start();
                     // process.WaitForExit();
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                Trace.WriteLine(e);
             }
         }
 
