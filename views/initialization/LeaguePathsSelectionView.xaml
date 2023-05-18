@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <StackPanel>
-        <Label>League PAth Selection</Label>
+        <Label>League Path Selection</Label>
         <Button Click="ScanButton_Clicked">Scan</Button>
         <ListBox x:Name="leaguePathsContainer"></ListBox>
         

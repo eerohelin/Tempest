@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Tempest"
         mc:Ignorable="d"
-        Title="Tempest Setup" Height="450" Width="800">
+        Title="Tempest Setup" Height="390" Width="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="300"/>
@@ -29,9 +29,10 @@
             </TabItem>
         </TabControl>
         
-        <StackPanel Orientation="Horizontal" Grid.Row="1">
-            <Button Click="Previous_Tab">Previous</Button>
-            <Button Click="Next_Tab">Next</Button>
+        <StackPanel Orientation="Horizontal" Grid.Row="1" FlowDirection="RightToLeft">
+            <Button Click="SaveButton_Clicked" Width="40" IsEnabled="False" x:Name="SaveButton">Save</Button>
+            <Button Click="Next_Tab" Width="40" x:Name="NextButton">Next</Button>
+            <Button Click="Previous_Tab" Width="40">Back</Button>
         </StackPanel>
     </Grid>
 </Window>

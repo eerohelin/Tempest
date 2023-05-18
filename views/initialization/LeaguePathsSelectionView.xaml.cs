@@ -58,7 +58,7 @@ namespace Tempest
 
         private void DeleteButton_Clicked(object sender, RoutedEventArgs e)
         {
-            if (leaguePathsContainer.Items.Count <= 0) { return; }
+            if (leaguePathsContainer.Items.Count <= 0 || leaguePathsContainer.SelectedIndex < 0) { return; }
             leaguePaths.RemoveAt(leaguePathsContainer.SelectedIndex);
         }
     }

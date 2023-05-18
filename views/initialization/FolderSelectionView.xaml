@@ -6,12 +6,12 @@
              xmlns:local="clr-namespace:Tempest"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <Label>Folder Selection</Label>
+    <StackPanel>
+        <Label>Replay Folder Selection</Label>
 
         <StackPanel>
             <ListBox x:Name="foldersListBox"></ListBox>
             <Button Click="AddFolderButton_Clicked">Add</Button>
         </StackPanel>
-    </Grid>
+    </StackPanel>
 </UserControl>
