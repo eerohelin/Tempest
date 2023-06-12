@@ -20,6 +20,6 @@
         <SolidColorBrush Opacity="0.002" Color="Black" />
     </Window.Background>
     <Canvas x:Name="sketchCanvas">
-        
+
     </Canvas>
 </Window>

@@ -75,6 +75,7 @@ namespace Tempest
 
             for (int i = 0; i < drives.Length; i++)
             {
+                if (drives[i].DriveType != DriveType.Fixed) { continue; }
                 directories.AddRange(GetDirectories(drives[i].ToString()));
             }
 

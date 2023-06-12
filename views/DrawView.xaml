@@ -57,13 +57,6 @@
                     >
                     </Image>
                 </Button>
-                <Button Style="{StaticResource mainButtonStyle}">
-                    <Image Source="/assets/resetw.png" 
-                           Width="24" 
-                           Height="24"
-                    >
-                    </Image>
-                </Button>
                 <Button Style="{StaticResource mainButtonStyle}" Click="ClearButton_Click">
                     <Image Source="/assets/trashw.png" 
                            Width="24" 
@@ -106,14 +99,14 @@
             </WrapPanel>
 
             <WrapPanel Grid.Row="3" HorizontalAlignment="Center">
-                <Button Style="{StaticResource mainButtonStyle}" Width="36" Background="#ff8c00"></Button>
-                <Button Style="{StaticResource mainButtonStyle}" Width="36" Background="#ffcc00"></Button>
-                <Button Style="{StaticResource mainButtonStyle}" Width="36" Background="#00ff2a"></Button>
-                <Button Style="{StaticResource mainButtonStyle}" Width="36" Background="#00ffcc"></Button>
-                <Button Style="{StaticResource mainButtonStyle}" Width="36" Background="#0080ff"></Button>
-                <Button Style="{StaticResource mainButtonStyle}" Width="36" Background="#4c00ff"></Button>
-                <Button Style="{StaticResource mainButtonStyle}" Width="36" Background="#ff00ee"></Button>
-                <Button Style="{StaticResource mainButtonStyle}" Width="36" Background="#ff0033"></Button>
+                <RadioButton Style="{StaticResource mainRadioButtonStyle}" Width="36" Background="#ffffff" Click="ColorChangeButton_Clicked"></RadioButton>
+                <RadioButton Style="{StaticResource mainRadioButtonStyle}" Width="36" Background="#ffcc00" Click="ColorChangeButton_Clicked"></RadioButton>
+                <RadioButton Style="{StaticResource mainRadioButtonStyle}" Width="36" Background="#00ff2a" Click="ColorChangeButton_Clicked"></RadioButton>
+                <RadioButton Style="{StaticResource mainRadioButtonStyle}" Width="36" Background="#00ffcc" Click="ColorChangeButton_Clicked"></RadioButton>
+                <RadioButton Style="{StaticResource mainRadioButtonStyle}" Width="36" Background="#0080ff" Click="ColorChangeButton_Clicked"></RadioButton>
+                <RadioButton Style="{StaticResource mainRadioButtonStyle}" Width="36" Background="#4c00ff" Click="ColorChangeButton_Clicked"></RadioButton>
+                <RadioButton Style="{StaticResource mainRadioButtonStyle}" Width="36" Background="#ff00ee" Click="ColorChangeButton_Clicked"></RadioButton>
+                <RadioButton Style="{StaticResource mainRadioButtonStyle}" Width="36" Background="#ff0033" Click="ColorChangeButton_Clicked"></RadioButton>
             </WrapPanel>
 
             <StackPanel Grid.Row="4" Margin="20,2,20,2">

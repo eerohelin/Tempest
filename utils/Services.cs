@@ -25,7 +25,7 @@ namespace Tempest
             get { return _tool; } set { _tool = value; ToolChanged(new Button(), EventArgs.Empty); }
         }
         public static bool lineSmoothing = true;
-        public static double brushSize = 4;
+        public static double brushSize = 3;
 
         public static Dictionary<string, string> leagueVersions = new(); // Version : Path to League.exe
     }

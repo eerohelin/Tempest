@@ -11,7 +11,7 @@
         Title="MainWindow"
         mc:Ignorable="d"
         Topmost="True"
-        Height="530"
+        Height="600"
         Width="220"
         Left="1685"
         Top="10"

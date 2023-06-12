@@ -115,5 +115,11 @@ namespace Tempest
         {
             SketchWindow.UiState.AdjustFoW("Off");
         }
+
+        private void ColorChangeButton_Clicked(object sender, RoutedEventArgs e)
+        {
+            ToggleButton button = (ToggleButton)sender;
+            Services.brushColor = (Color)ColorConverter.ConvertFromString(button.Background.ToString());
+        }
     }
 }

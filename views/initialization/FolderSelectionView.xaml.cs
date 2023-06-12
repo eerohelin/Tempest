@@ -58,7 +58,7 @@ namespace Tempest
             if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 string selectedFolder = dialog.SelectedPath;
-                Trace.WriteLine(selectedFolder);
+                replayPaths.Add(selectedFolder);
             }
 
         }

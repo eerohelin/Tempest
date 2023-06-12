@@ -93,12 +93,14 @@ namespace Tempest
                 {
                     if (Element is Line || Element is Path || Element is Polyline || Element is Canvas || Element is Ward)
                     {
+                        if (CurrentUiState.Contains(Element)) { continue; }
                         sketchCanvas.Children.Remove(Element);
                     }
                 }
                 foreach (UIElement Element in CurrentUiState)
                 {
-                    sketchCanvas.Children.Add(Element);
+                    if (!sketchCanvas.Children.Contains(Element)) { sketchCanvas.Children.Add(Element); }
+                    
                 }
             }
 
@@ -464,14 +466,6 @@ namespace Tempest
             if (e.Key == Key.Z && Keyboard.IsKeyDown(Key.LeftCtrl))
             {
                 UiState.Undo();
-            }
-            if (e.Key == Key.X) // Map image testing shortcuts
-            {
-                Services.mapImage._Opacity = 0;
-            }
-            if (e.Key == Key.C)
-            {
-                Services.mapImage._Opacity = 1;
             }
         }
 

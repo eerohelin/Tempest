@@ -53,8 +53,9 @@
                          Margin="0,5,0,0">
                     Clear
                 </Button>
-                <Button Margin="0,0,0,0"
+                <Button Margin="0,0,0,0" 
                           x:Name="tagFilterButton"
+                          Style="{StaticResource mainButtonStyle}"
                           Click="onTagFilterButtonClick"
                           Width="200">
                     Filter

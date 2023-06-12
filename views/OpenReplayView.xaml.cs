@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -17,6 +18,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using static System.Net.WebRequestMethods;
 
 namespace Tempest
 {
@@ -47,11 +49,19 @@ namespace Tempest
 
         private void CreateReplayComponents()
         {
-            string replayPath = "C:\\Users\\zedpl\\Documents\\League of Legends\\Replays";
+            List<string> replayPaths = new();
+            foreach (string roflFolder in properties.Settings.Default.rofl_paths)
+            {
+                var tempFiles = Directory.GetFiles(roflFolder, "*.rofl");
+                foreach (string tempFile in tempFiles)
+                {
+                    replayPaths.Add(tempFile);
+                }
+            }
 
-            var replayPaths = Directory.GetFiles(replayPath, "*.rofl").OrderByDescending(d => new FileInfo(d).CreationTime);
+            var orderedPaths = replayPaths.OrderByDescending(d => new FileInfo(d).CreationTime);
 
-            foreach (string replay in replayPaths)
+            foreach (string replay in orderedPaths)
             {
                 ReplayObject replayObject = ROFLHandler.ParseROFL(replay);
                 if (replayObject is null) { continue; }
