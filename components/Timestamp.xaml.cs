@@ -43,6 +43,7 @@ namespace Tempest
             timeLabel.Content = $"{(int)parsedTime.TotalMinutes}:{parsedTime.Seconds}";
 
             GetTags();
+            CheckTags();
         }
 
         public void AddTag(string tag)
@@ -63,6 +64,14 @@ namespace Tempest
             foreach (string tag in ReplayView.Tags)
             {
                 AddTag(tag);
+            }
+        }
+
+        private void CheckTags()
+        {
+            if (ReplayView.CurrentTags.Count > 0)
+            {
+                Visibility = Visibility.Collapsed;
             }
         }
 
