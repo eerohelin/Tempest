@@ -471,7 +471,7 @@ namespace Tempest
                 UiState.Undo();
             }
         }
-        private void LineHover(object sender, MouseEventArgs e, UIElement element)
+        public static void LineHover(object sender, MouseEventArgs e, UIElement element)
         {
             if (Services.tool == 2 && e.LeftButton == MouseButtonState.Pressed)
             {

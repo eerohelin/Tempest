@@ -273,4 +273,22 @@ namespace Tempest
         public string? VICTORY_POINT_TOTAL { get; set; }
         public string? WIN { get; set; }
     }
+
+    public class Drawing
+    {
+        private List<DrawingPath> _Paths = new List<DrawingPath>();
+        public List<DrawingPath> Paths
+        {
+            get { return _Paths; }
+            set { _Paths = value; }
+        }
+        public bool MapState { get; set; }
+    }
+
+    public class DrawingPath
+    {
+        public string? Stroke { get; set; }
+        public string? Data { get; set; }
+        public double? BrushSize { get; set; }
+    }
 }

@@ -22,9 +22,14 @@ namespace Tempest
     /// </summary>
     public partial class DrawView : UserControl
     {
+        private static WrapPanel _mapButtons;
+        public static ToggleButton _mapToggleButton;
         public DrawView()
         {
             InitializeComponent();
+
+            _mapButtons = mapButtons;
+            _mapToggleButton = mapToggleButton;
         }
 
         private void SwitchTool(object sender, RoutedEventArgs e)
@@ -46,10 +51,20 @@ namespace Tempest
 
         private void MapToggleButton_Check(object sender, RoutedEventArgs e)
         {
+            TurnMapOn(sender);
+        }
+
+        private void MapToggleButton_Uncheck(object sender, RoutedEventArgs e)
+        {
+            TurnMapOff(sender);
+        }
+
+        public static void TurnMapOn(object sender)
+        {
             Services.mapImage._Opacity = 1;
             SketchWindow.UiState.fogOfWar.Opacity = .5;
 
-            foreach (UIElement element in mapButtons.Children)
+            foreach (UIElement element in _mapButtons.Children)
             {
                 if ((object)element == sender) { continue; }
 
@@ -59,13 +74,15 @@ namespace Tempest
                     Button button = (Button)element;
                     Image image = (Image)button.Content;
                     image.Opacity = 1;
-                } else if (element is RadioButton)
+                }
+                else if (element is RadioButton)
                 {
                     element.IsEnabled = true;
                     RadioButton button = (RadioButton)element;
                     Image image = (Image)button.Content;
                     image.Opacity = 1;
-                } else if (element is ToggleButton)
+                }
+                else if (element is ToggleButton)
                 {
                     element.IsEnabled = true;
                     ToggleButton button = (ToggleButton)element;
@@ -75,12 +92,12 @@ namespace Tempest
             }
         }
 
-        private void MapToggleButton_Uncheck(object sender, RoutedEventArgs e)
+        public static void TurnMapOff(object sender)
         {
             Services.mapImage._Opacity = 0;
             SketchWindow.UiState.fogOfWar.Opacity = 0;
 
-            foreach (UIElement element in mapButtons.Children)
+            foreach (UIElement element in _mapButtons.Children)
             {
                 if ((object)element == sender) { continue; }
 
@@ -90,13 +107,15 @@ namespace Tempest
                     Button button = (Button)element;
                     Image image = (Image)button.Content;
                     image.Opacity = .3;
-                } else if (element is RadioButton)
+                }
+                else if (element is RadioButton)
                 {
                     element.IsEnabled = false;
                     RadioButton button = (RadioButton)element;
                     Image image = (Image)button.Content;
                     image.Opacity = .3;
-                } else if (element is ToggleButton)
+                }
+                else if (element is ToggleButton)
                 {
                     element.IsEnabled = false;
                     ToggleButton button = (ToggleButton)element;
@@ -120,6 +139,11 @@ namespace Tempest
         {
             ToggleButton button = (ToggleButton)sender;
             Services.brushColor = (Color)ColorConverter.ConvertFromString(button.Background.ToString());
+        }
+
+        private void ClearDrawingsButton_Click(object sender, RoutedEventArgs e)
+        {
+            drawingContainer.Children.Add(new DrawingComponent() { Title = "test" });
         }
     }
 }
