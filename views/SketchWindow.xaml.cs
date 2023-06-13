@@ -12,10 +12,12 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Xml.Linq;
+using System.Xml.Serialization;
 
 namespace Tempest
 {
@@ -226,13 +228,14 @@ namespace Tempest
 
         private Player Create_Player(string role)
         {
-            Player player = new(role)
+            Player player = new()
             {
                 Width = 30,
                 Height = 30,
                 canvas = sketchCanvas,
                 Background = Brushes.Red,
-                CornerRadius = new CornerRadius(50)
+                CornerRadius = new CornerRadius(50),
+                role = role
             };
             Canvas.SetLeft(player, 500);
             Canvas.SetTop(player, 500);
@@ -468,7 +471,6 @@ namespace Tempest
                 UiState.Undo();
             }
         }
-
         private void LineHover(object sender, MouseEventArgs e, UIElement element)
         {
             if (Services.tool == 2 && e.LeftButton == MouseButtonState.Pressed)

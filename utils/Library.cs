@@ -2,6 +2,7 @@
 using System.Buffers;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
@@ -21,18 +22,31 @@ using System.Xml.Linq;
 
 namespace Tempest
 {
-    internal class Player : Border
+    public class Player : Border
     {
         public Canvas? _canvas;
         private bool moving = false;
-        private EllipseGeometry _ellipseGeometry;
+        private EllipseGeometry? _ellipseGeometry;
+        [Required]
+        public string role { get; set; }
 
-        public Player(string role)
+        public Player()
         {
             PreviewMouseDown += PlayerMouseDown;
             PreviewMouseUp += PlayerMouseUp;
             Services.mapImage.OpacityChanged += UpdateOpacity;
 
+            Panel.SetZIndex(this, 10000);
+
+            CreateVision();
+
+            Opacity = 0;
+
+            Loaded += Player_Loaded;
+        }
+
+        private void Player_Loaded(object sender, RoutedEventArgs e)
+        {
             Label roleText = new()
             {
                 Content = role,
@@ -41,12 +55,6 @@ namespace Tempest
             };
 
             Child = roleText;
-
-            Panel.SetZIndex(this, 10000);
-
-            CreateVision();
-
-            Opacity = 0;
         }
 
         private void CreateVision()
@@ -110,7 +118,7 @@ namespace Tempest
         }
     }
 
-    internal class Ward : Border
+    public class Ward : Border
     {
 
         public bool moving = false;
@@ -217,20 +225,25 @@ namespace Tempest
         }
     }
 
-    internal class MapImage : Image
+    public class MapImage : Image
     {
         public event EventHandler? OpacityChanged;
 
         public MapImage()
         {
             Source = new BitmapImage(new Uri(@"/assets/lol_map.png", UriKind.Relative));
-            Opacity = 0;
+            _Opacity = 0;
         }
 
         public double _Opacity
         {
-            set { Opacity = value; OpacityChanged(this, EventArgs.Empty); }
+            set { Opacity = value; OnOpacityChange(); }
             get { return Opacity; }
+        }
+
+        protected virtual void OnOpacityChange()
+        {
+            if (OpacityChanged != null) OpacityChanged(this, EventArgs.Empty);
         }
     }
 
