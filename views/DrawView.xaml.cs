@@ -131,6 +131,11 @@ namespace Tempest
 
         private void ClearDrawingsButton_Click(object sender, RoutedEventArgs e)
         {
+            
+        }
+
+        private void SaveDrawingsButton_Click(object sender, RoutedEventArgs e)
+        {
             drawingContainer.Children.Add(new DrawingComponent() { Title = "test" });
         }
     }

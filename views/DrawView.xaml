@@ -120,7 +120,7 @@
                 </TextBlock>
                 <TextBox Grid.Row="1" Name="MyTextBox" Margin="5" Width="100" Style="{StaticResource textBoxStyle}"/>
                 <WrapPanel Grid.Row="3" HorizontalAlignment="Center">
-                    <Button Style="{StaticResource mainButtonStyle}">
+                    <Button Style="{StaticResource mainButtonStyle}" Click="SaveDrawingsButton_Click">
                         <Image Source="/assets/savew.png" 
                                Width="24" 
                                Height="24"

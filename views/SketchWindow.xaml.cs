@@ -51,7 +51,7 @@ namespace Tempest
             mainWindow.Show();
             Create_Map();
 
-            Create_Player("T");
+            Load_Players();
 
             UiState.sketchCanvas = sketchCanvas;
 
@@ -152,6 +152,28 @@ namespace Tempest
             }
         }
 
+        private void Load_Players()
+        {
+            List<PlayerData> playerDatas = new()
+            {
+                new PlayerData() { Offsets = new Tuple<double, double>(0.1351, 0.2136), Role = "T", Team = "Blue" },
+                new PlayerData() { Offsets = new Tuple<double, double>(0.2165, 0.1379), Role = "T", Team = "Red" },
+                new PlayerData() { Offsets = new Tuple<double, double>(0.2107, 0.5077), Role = "J", Team = "Blue" },
+                new PlayerData() { Offsets = new Tuple<double, double>(0.7998, 0.5019), Role = "J", Team = "Red" },
+                new PlayerData() { Offsets = new Tuple<double, double>(0.4741, 0.5316), Role = "M", Team = "Blue" },
+                new PlayerData() { Offsets = new Tuple<double, double>(0.5383, 0.4808), Role = "M", Team = "Red" },
+                new PlayerData() { Offsets = new Tuple<double, double>(0.7874, 0.8448), Role = "B", Team = "Blue" },
+                new PlayerData() { Offsets = new Tuple<double, double>(0.8573, 0.7778), Role = "B", Team = "Red" },
+                new PlayerData() { Offsets = new Tuple<double, double>(0.8170, 0.8803), Role = "S", Team = "Blue" },
+                new PlayerData() { Offsets = new Tuple<double, double>(0.8879, 0.8065), Role = "S", Team = "Red" }
+            };
+
+            foreach(PlayerData playerData in playerDatas)
+            {
+                Create_Player(playerData);
+            }
+        }
+
         private void Create_Map()
         {
             Services.mapImage.Width = sketchCanvas.ActualHeight - 50;
@@ -175,23 +197,28 @@ namespace Tempest
             Canvas.SetLeft(ward, point.X - (ward.Width / 2));
             Canvas.SetTop(ward, point.Y - (ward.Height / 2));
             UiState.Add(ward);
-            ward.LoadPosition();
             return ward;
         }
 
-        private Player Create_Player(string role)
+        private Player Create_Player(PlayerData data)
         {
             Player player = new()
             {
                 Width = 30,
                 Height = 30,
                 canvas = sketchCanvas,
-                Background = Brushes.Red,
                 CornerRadius = new CornerRadius(50),
-                role = role
+                data = data
             };
-            Canvas.SetLeft(player, 500);
-            Canvas.SetTop(player, 500);
+
+            double XOffset = Canvas.GetLeft(Services.mapImage);
+            double YOffset = Canvas.GetTop(Services.mapImage);
+
+            double XPosition = Services.mapImage.Width * data.Offsets.Item1 - player.Width / 2;
+            double YPosition = Services.mapImage.Width * data.Offsets.Item2 - player.Width / 2;
+
+            Canvas.SetLeft(player, XOffset + XPosition);
+            Canvas.SetTop(player, YOffset + YPosition);
             sketchCanvas.Children.Add(player);
             return player;
         }

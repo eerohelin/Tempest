@@ -26,9 +26,8 @@ namespace Tempest
     {
         public Canvas? _canvas;
         private bool moving = false;
-        private EllipseGeometry? _ellipseGeometry;
-        [Required]
-        public string role { get; set; }
+        public PlayerData data { get; set; }
+        private Point offsetPoint = new();
 
         public Player()
         {
@@ -47,12 +46,15 @@ namespace Tempest
         {
             Label roleText = new()
             {
-                Content = role,
+                Content = data.Role,
                 VerticalContentAlignment = VerticalAlignment.Center,
                 HorizontalAlignment = HorizontalAlignment.Center
             };
 
             Child = roleText;
+
+            if (data.Team == "Blue") { Background = Brushes.Blue; }
+            else { Background = Brushes.Red; }
         }
 
         private void UpdateOpacity(object? sender, EventArgs e)
@@ -71,6 +73,8 @@ namespace Tempest
             if (Services.tool != 4) { return; }
             moving = true;
             Mouse.Capture(this);
+
+            offsetPoint = e.GetPosition(this);
         }
 
         private void PlayerMouseUp(object sender, MouseButtonEventArgs e)
@@ -83,8 +87,8 @@ namespace Tempest
         {
             if (moving)
             {
-                Canvas.SetTop(this, e.GetPosition(_canvas).Y - this.Width / 2);
-                Canvas.SetLeft(this, e.GetPosition(_canvas).X - this.Width / 2);
+                Canvas.SetTop(this, e.GetPosition(_canvas).Y - offsetPoint.Y);
+                Canvas.SetLeft(this, e.GetPosition(_canvas).X - offsetPoint.X);
 
                 e.Handled = true;
             }
@@ -96,7 +100,6 @@ namespace Tempest
 
         public bool moving = false;
         public Canvas? _canvas;
-        private EllipseGeometry _ellipseGeometry;
         public Ward()
         {
             Opacity = Services.mapImage.Opacity;
@@ -119,19 +122,6 @@ namespace Tempest
             child.MouseEnter += WardMouseEnter;
 
             Child = child;
-        }
-
-        public void LoadPosition()
-        {
-            double imageLeft = Canvas.GetLeft(Services.mapImage);
-            double imageTop = Canvas.GetTop(Services.mapImage);
-
-            Point position = new Point(Canvas.GetLeft(this), Canvas.GetTop(this));
-
-            double relativeX = position.X - imageLeft + (Width / 2);
-            double relativeY = position.Y - imageTop + (Height / 2);
-
-            _ellipseGeometry.Center = new Point(relativeX, relativeY);
         }
 
         public Canvas canvas
@@ -165,7 +155,6 @@ namespace Tempest
                 Canvas.SetTop(this, e.GetPosition(_canvas).Y - this.Width / 2);
                 Canvas.SetLeft(this, e.GetPosition(_canvas).X - this.Width / 2);
 
-                LoadPosition();
                 e.Handled = true;
             }
         }
@@ -296,5 +285,12 @@ namespace Tempest
                 Foreground = Brushes.Gray;
             }
         }
+    }
+
+    public class PlayerData
+    {
+        public Tuple<double, double> Offsets { get; set; }
+        public string Role { get; set; }
+        public string Team { get; set; }
     }
 }
