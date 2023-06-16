@@ -291,4 +291,55 @@ namespace Tempest
         public string? Data { get; set; }
         public double? BrushSize { get; set; }
     }
+
+    public class PlaceholderTextBox : TextBox
+    {
+        public static readonly DependencyProperty PlaceholderProperty =
+            DependencyProperty.Register(
+                "Placeholder",
+                typeof(string),
+                typeof(PlaceholderTextBox),
+                new PropertyMetadata(string.Empty));
+
+        public string Placeholder
+        {
+            get { return (string)GetValue(PlaceholderProperty); }
+            set { SetValue(PlaceholderProperty, value); }
+        }
+
+        public PlaceholderTextBox()
+        {
+            GotFocus += TextBox_GotFocus;
+            LostFocus += TextBox_LostFocus;
+
+            Loaded += PlaceholderTextBox_Loaded;
+        }
+
+        private void PlaceholderTextBox_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(Text))
+            {
+                Text = Placeholder;
+                Foreground = Brushes.Gray;
+            }
+        }
+
+        private void TextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (Text == Placeholder)
+            {
+                Text = string.Empty;
+                Foreground = Brushes.WhiteSmoke;
+            }
+        }
+
+        private void TextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(Text))
+            {
+                Text = Placeholder;
+                Foreground = Brushes.Gray;
+            }
+        }
+    }
 }
