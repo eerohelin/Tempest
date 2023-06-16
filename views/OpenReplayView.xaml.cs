@@ -28,7 +28,6 @@ namespace Tempest
     public partial class OpenReplayView : Window
     {
 
-        public static string version = string.Empty;
         public ReplayView _parent;
         public OpenReplayView(ReplayView parent)
         {
@@ -41,8 +40,6 @@ namespace Tempest
 
         private async void OpenReplayView_Loaded(object sender, RoutedEventArgs e)
         {
-            version = await GetLatestVersion();
-
             CreateReplayComponents();
         
         }
@@ -68,21 +65,6 @@ namespace Tempest
                 ReplayComponent replayComponent = new(replayObject, replay, this);
                 replayContainer.Children.Add(replayComponent);
             }
-        }
-
-        private async Task<string> GetLatestVersion()
-        {
-            string url = "http://ddragon.leagueoflegends.com/api/versions.json";
-
-            // best practice to create one HttpClient per Application and inject it
-            HttpClient client = new();
-
-            using HttpResponseMessage response = await client.GetAsync(url);
-            using HttpContent content = response.Content;
-            string json = await content.ReadAsStringAsync();
-
-            JsonNode objects = JsonArray.Parse(json);
-            return objects[0].ToString();
         }
 
         public void CheckComponents()

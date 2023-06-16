@@ -103,7 +103,7 @@ namespace Tempest
 
         private BitmapImage LoadChampionImage(string ChampionName)
         {
-            var fullFilePath = $"https://cdn.communitydragon.org/{OpenReplayView.version}/champion/{ChampionName}/square";
+            var fullFilePath = $"https://cdn.communitydragon.org/latest/champion/{ChampionName}/square";
 
 
             BitmapImage bitmap = new BitmapImage();
