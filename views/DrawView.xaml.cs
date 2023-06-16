@@ -62,7 +62,6 @@ namespace Tempest
         public static void TurnMapOn(object sender)
         {
             Services.mapImage._Opacity = 1;
-            SketchWindow.UiState.fogOfWar.Opacity = .5;
 
             foreach (UIElement element in _mapButtons.Children)
             {
@@ -95,7 +94,6 @@ namespace Tempest
         public static void TurnMapOff(object sender)
         {
             Services.mapImage._Opacity = 0;
-            SketchWindow.UiState.fogOfWar.Opacity = 0;
 
             foreach (UIElement element in _mapButtons.Children)
             {
@@ -123,16 +121,6 @@ namespace Tempest
                     image.Opacity = .3;
                 }
             }
-        }
-
-        private void FogOfWarButton_Check(object sender, RoutedEventArgs e)
-        {
-            SketchWindow.UiState.AdjustFoW("On");
-        }
-
-        private void FogOfWarButton_Uncheck(object sender, RoutedEventArgs e)
-        {
-            SketchWindow.UiState.AdjustFoW("Off");
         }
 
         private void ColorChangeButton_Clicked(object sender, RoutedEventArgs e)

@@ -38,8 +38,6 @@ namespace Tempest
 
             Panel.SetZIndex(this, 10000);
 
-            CreateVision();
-
             Opacity = 0;
 
             Loaded += Player_Loaded;
@@ -55,30 +53,6 @@ namespace Tempest
             };
 
             Child = roleText;
-        }
-
-        private void CreateVision()
-        {
-            EllipseGeometry ellipseGeometry = new EllipseGeometry();
-            ellipseGeometry.RadiusX = 60;
-            ellipseGeometry.RadiusY = 60;
-
-            _ellipseGeometry = ellipseGeometry;
-
-            SketchWindow.UiState.clipGroup.Children.Add(_ellipseGeometry);
-        }
-
-        public void LoadPosition()
-        {
-            double imageLeft = Canvas.GetLeft(Services.mapImage);
-            double imageTop = Canvas.GetTop(Services.mapImage);
-
-            Point position = new Point(Canvas.GetLeft(this), Canvas.GetTop(this));
-
-            double relativeX = position.X - imageLeft + (Width / 2);
-            double relativeY = position.Y - imageTop + (Height / 2);
-            
-            _ellipseGeometry.Center = new Point(relativeX, relativeY);
         }
 
         private void UpdateOpacity(object? sender, EventArgs e)
@@ -112,7 +86,6 @@ namespace Tempest
                 Canvas.SetTop(this, e.GetPosition(_canvas).Y - this.Width / 2);
                 Canvas.SetLeft(this, e.GetPosition(_canvas).X - this.Width / 2);
 
-                LoadPosition();
                 e.Handled = true;
             }
         }
@@ -138,8 +111,6 @@ namespace Tempest
 
             Panel.SetZIndex(this, 10000);
 
-            CreateVision();
-
 
             Border child = new() { Width = 20, Height = 20, CornerRadius = new CornerRadius(50), Background = Brushes.Blue };
 
@@ -148,22 +119,6 @@ namespace Tempest
             child.MouseEnter += WardMouseEnter;
 
             Child = child;
-        }
-
-        private void CreateVision()
-        {
-            EllipseGeometry ellipseGeometry = new EllipseGeometry();
-            ellipseGeometry.RadiusX = 60;
-            ellipseGeometry.RadiusY = 60;
-
-            _ellipseGeometry = ellipseGeometry;
-
-            SketchWindow.UiState.clipGroup.Children.Add(_ellipseGeometry);
-        }
-
-        public void DeleteVision()
-        {
-            SketchWindow.UiState.clipGroup.Children.Remove(_ellipseGeometry);
         }
 
         public void LoadPosition()

@@ -64,12 +64,6 @@ namespace Tempest
 
             public static Canvas sketchCanvas = new();
 
-            public static GeometryGroup clipGroup = new();
-            public static CombinedGeometry combinedClip = new()
-            {
-                GeometryCombineMode = GeometryCombineMode.Exclude
-            };
-            public static Rectangle fogOfWar = new();
             public static new void Add(UIElement Item)
             {
                 UiStates.Add(new List<UIElement>(CurrentUiState));
@@ -129,24 +123,10 @@ namespace Tempest
                     if (Element is Ward)
                     {
                         Ward ward = (Ward)Element;
-                        ward.DeleteVision();
                         CurrentUiState.Remove(Element);
                     }
                 }
                 ReloadUI();
-            }
-
-            public static void AdjustFoW(string state)
-            {
-                switch(state)
-                {
-                    case "Off":
-                        UiState.fogOfWar.Visibility = Visibility.Hidden;
-                        break;
-                    case "On":
-                        UiState.fogOfWar.Visibility = Visibility.Visible;
-                        break;
-                }
             }
         }
 
@@ -172,44 +152,17 @@ namespace Tempest
             }
         }
 
-        private void Create_FogOfWar()
-        {
-            RectangleGeometry rect = new RectangleGeometry(new Rect(0, 0, sketchCanvas.ActualHeight - 50, sketchCanvas.ActualHeight - 50));
-            UiState.combinedClip.Geometry1 = rect;
-            UiState.combinedClip.Geometry2 = UiState.clipGroup;
-
-            UiState.fogOfWar.Clip = UiState.combinedClip;
-            UiState.fogOfWar.Opacity = 0;
-            UiState.fogOfWar.Visibility = Visibility.Hidden;
-        }
-
         private void Create_Map()
         {
             Services.mapImage.Width = sketchCanvas.ActualHeight - 50;
             Services.mapImage.Height = sketchCanvas.ActualHeight - 50;
 
-            Rectangle rectangle = new()
-            {
-                Width = Services.mapImage.Width,
-                Height = Services.mapImage.Height,
-                Fill = new SolidColorBrush(Color.FromRgb(0, 0, 0)),
-                Opacity = .5
-            };
-
-            UiState.fogOfWar = rectangle;
 
             double left = sketchCanvas.ActualWidth / 4.4;
             Canvas.SetLeft(Services.mapImage, left);
             Canvas.SetTop(Services.mapImage, 25);
             Panel.SetZIndex(Services.mapImage, -3);
             sketchCanvas.Children.Add(Services.mapImage);
-
-            Canvas.SetLeft(rectangle, left);
-            Canvas.SetTop(rectangle, 25);
-            Panel.SetZIndex(rectangle, -2);
-            sketchCanvas.Children.Add(rectangle);
-
-            Create_FogOfWar();
         }
 
         private Ward Create_Ward(Point point)
@@ -240,7 +193,6 @@ namespace Tempest
             Canvas.SetLeft(player, 500);
             Canvas.SetTop(player, 500);
             sketchCanvas.Children.Add(player);
-            player.LoadPosition();
             return player;
         }
 

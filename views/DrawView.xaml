@@ -16,7 +16,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="15"></RowDefinition>
                 <RowDefinition Height="100"></RowDefinition>
-                <RowDefinition Height="100"></RowDefinition>
+                <RowDefinition Height="50"></RowDefinition>
                 <RowDefinition Height="100"></RowDefinition>
                 <RowDefinition Height="25"></RowDefinition>
                 <RowDefinition></RowDefinition>
@@ -88,14 +88,6 @@
                     >
                     </Image>
                 </RadioButton>
-                <ToggleButton Style="{StaticResource mainToggleButtonStyle}" IsEnabled="False" Checked="FogOfWarButton_Check" Unchecked="FogOfWarButton_Uncheck">
-                    <Image Source="/assets/eyew.png" 
-                           Width="24" 
-                           Height="24"
-                           Opacity=".3"
-                    >
-                    </Image>
-                </ToggleButton>
             </WrapPanel>
 
             <WrapPanel Grid.Row="3" HorizontalAlignment="Center">
@@ -146,7 +138,7 @@
                 <ScrollViewer Grid.Row="4"
                           VerticalScrollBarVisibility="Hidden"
                           Background="#515a69"
-                          Height="50"
+                          Height="120"
                           Width="200"
                           Margin="10">
                     <StackPanel x:Name="drawingContainer"
