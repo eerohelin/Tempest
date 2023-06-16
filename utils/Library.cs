@@ -67,6 +67,18 @@ namespace Tempest
             set { _canvas = value; _canvas.PreviewMouseMove += PlayerMouseMove; }
         }
 
+        public void ResetPosition()
+        {
+            double XOffset = Canvas.GetLeft(Services.mapImage);
+            double YOffset = Canvas.GetTop(Services.mapImage);
+
+            double XPosition = Services.mapImage.Width * data.Offsets.Item1 - Width / 2;
+            double YPosition = Services.mapImage.Width * data.Offsets.Item2 - Width / 2;
+
+            Canvas.SetLeft(this, XOffset + XPosition);
+            Canvas.SetTop(this, YOffset + YPosition);
+        }
+
 
         private void PlayerMouseDown(object sender, MouseButtonEventArgs e)
         {

@@ -63,6 +63,12 @@
                            Height="24"
                     >
                     </Image>
+                </Button><Button Style="{StaticResource mainButtonStyle}" Click="ResetButton_Click">
+                    <Image Source="/assets/resetw.png" 
+                           Width="24" 
+                           Height="24"
+                    >
+                    </Image>
                 </Button>
             </WrapPanel>
 

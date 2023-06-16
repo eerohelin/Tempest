@@ -138,5 +138,17 @@ namespace Tempest
         {
             drawingContainer.Children.Add(new DrawingComponent() { Title = "test" });
         }
+
+        private void ResetButton_Click(object sender, RoutedEventArgs e)
+        {
+            foreach(var element in SketchWindow.UiState.sketchCanvas.Children)
+            {
+                if (element is Player)
+                {
+                    Player player = (Player)element;
+                    player.ResetPosition();
+                }
+            }
+        }
     }
 }

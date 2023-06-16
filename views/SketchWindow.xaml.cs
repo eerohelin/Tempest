@@ -154,6 +154,14 @@ namespace Tempest
 
         private void Load_Players()
         {
+            foreach(PlayerData playerData in defaultPlayerData())
+            {
+                Create_Player(playerData);
+            }
+        }
+
+        private List<PlayerData> defaultPlayerData()
+        {
             List<PlayerData> playerDatas = new()
             {
                 new PlayerData() { Offsets = new Tuple<double, double>(0.1351, 0.2136), Role = "T", Team = "Blue" },
@@ -167,11 +175,7 @@ namespace Tempest
                 new PlayerData() { Offsets = new Tuple<double, double>(0.8170, 0.8803), Role = "S", Team = "Blue" },
                 new PlayerData() { Offsets = new Tuple<double, double>(0.8879, 0.8065), Role = "S", Team = "Red" }
             };
-
-            foreach(PlayerData playerData in playerDatas)
-            {
-                Create_Player(playerData);
-            }
+            return playerDatas;
         }
 
         private void Create_Map()
@@ -210,16 +214,8 @@ namespace Tempest
                 CornerRadius = new CornerRadius(50),
                 data = data
             };
-
-            double XOffset = Canvas.GetLeft(Services.mapImage);
-            double YOffset = Canvas.GetTop(Services.mapImage);
-
-            double XPosition = Services.mapImage.Width * data.Offsets.Item1 - player.Width / 2;
-            double YPosition = Services.mapImage.Width * data.Offsets.Item2 - player.Width / 2;
-
-            Canvas.SetLeft(player, XOffset + XPosition);
-            Canvas.SetTop(player, YOffset + YPosition);
             sketchCanvas.Children.Add(player);
+            player.ResetPosition();
             return player;
         }
 
