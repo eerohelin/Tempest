@@ -136,7 +136,15 @@ namespace Tempest
 
         private void SaveDrawingsButton_Click(object sender, RoutedEventArgs e)
         {
-            drawingContainer.Children.Add(new DrawingComponent() { Title = "test" });
+            SaveDrawing();
+        }
+
+        private void SaveDrawing()
+        {
+            string title = DrawingTitleTextBox.Text.Length != 0 ? DrawingTitleTextBox.Text : $"Timestamp #{drawingContainer.Children.Count + 1}";
+            drawingContainer.Children.Add(new DrawingComponent() { Title = title });
+
+            DrawingTitleTextBox.Text = "";
         }
 
         private void ResetButton_Click(object sender, RoutedEventArgs e)
@@ -148,6 +156,14 @@ namespace Tempest
                     Player player = (Player)element;
                     player.ResetPosition();
                 }
+            }
+        }
+
+        private void OnDrawingTitleTextBoxKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return)
+            {
+                SaveDrawing();
             }
         }
     }

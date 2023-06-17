@@ -267,8 +267,19 @@ namespace Tempest
         {
             GotFocus += TextBox_GotFocus;
             LostFocus += TextBox_LostFocus;
+            TextChanged += PlaceholderTextBox_TextChanged;
 
             Loaded += PlaceholderTextBox_Loaded;
+        }
+
+        private void PlaceholderTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (IsFocused) { return; }
+            if (string.IsNullOrWhiteSpace(Text))
+            {
+                Text = Placeholder;
+                Foreground = Brushes.Gray;
+            }
         }
 
         private void PlaceholderTextBox_Loaded(object sender, RoutedEventArgs e)
