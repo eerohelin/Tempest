@@ -151,7 +151,7 @@ namespace Tempest
 
             string title = titleTextBox.Text.Length != 0 && titleTextBox.Text != titleTextBox.Placeholder ? titleTextBox.Text : $"Timestamp #{timestampContainer.Children.Count + 1}";
 
-            timestampContainer.Children.Add(new Timestamp(title, totalSeconds));
+            timestampContainer.Children.Add(new Timestamp() { Data = new TimestampData { Time = totalSeconds, Title = title} });
 
             titleTextBox.Text = "";
             timeTextBox.Text = "";

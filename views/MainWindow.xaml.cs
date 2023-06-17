@@ -35,6 +35,53 @@ namespace Tempest
             Loaded += MainWindow_Loaded;
         }
 
+        public class ProjectHandler
+        {
+            public static Project? CurrentProject;
+
+            public static void SaveProject()
+            {
+                Project tempProject = new Project()
+                {
+                    Timestamps = GatherTimestamps(),
+                    Tags = GatherTags(),
+                    Drawings = GatherDrawings()
+                };
+
+                CurrentProject = tempProject;
+            }
+
+
+            private static List<TimestampData> GatherTimestamps()
+            {
+                List<TimestampData> tempList = new();
+
+                foreach(Timestamp timestamp in ReplayView.tsContainer.Children)
+                {
+                    tempList.Add(timestamp.Data);
+                }
+
+                return tempList;
+            }
+
+            private static List<string> GatherTags()
+            {
+                return ReplayView.Tags.ToList();
+            }
+
+            private static List<Drawing> GatherDrawings()
+            {
+                List<Drawing> tempList = new();
+
+                foreach(DrawingComponent drawingComponent in DrawView._drawingContainer.Children)
+                {
+                    tempList.Add(drawingComponent._Drawing);
+                }
+                
+                return tempList;
+            }
+        }
+
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             LeaguePaths.LoadLeagueVersions();

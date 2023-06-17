@@ -24,12 +24,20 @@ namespace Tempest
     {
         private static WrapPanel _mapButtons;
         public static ToggleButton _mapToggleButton;
+        public static StackPanel _drawingContainer;
         public DrawView()
         {
             InitializeComponent();
 
             _mapButtons = mapButtons;
             _mapToggleButton = mapToggleButton;
+
+            Loaded += DrawView_Loaded;
+        }
+
+        private void DrawView_Loaded(object sender, RoutedEventArgs e)
+        {
+            _drawingContainer = drawingContainer;
         }
 
         private void SwitchTool(object sender, RoutedEventArgs e)

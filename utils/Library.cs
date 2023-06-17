@@ -55,6 +55,8 @@ namespace Tempest
 
             if (data.Team == "Blue") { Background = Brushes.Blue; }
             else { Background = Brushes.Red; }
+
+            UpdateOpacity(new object(), new EventArgs());
         }
 
         private void UpdateOpacity(object? sender, EventArgs e)
@@ -67,6 +69,17 @@ namespace Tempest
             set { _canvas = value; _canvas.PreviewMouseMove += PlayerMouseMove; }
         }
 
+        public void InitializePosition()
+        {
+            if (data.Position == null)
+            {
+                ResetPosition();
+                return;
+            }
+
+            Canvas.SetLeft(this, data.Position.Item1);
+            Canvas.SetTop(this, data.Position.Item2);
+        }
         public void ResetPosition()
         {
             double XOffset = Canvas.GetLeft(Services.mapImage);
@@ -77,6 +90,7 @@ namespace Tempest
 
             Canvas.SetLeft(this, XOffset + XPosition);
             Canvas.SetTop(this, YOffset + YPosition);
+
         }
 
 
@@ -239,6 +253,12 @@ namespace Tempest
             set { _Paths = value; }
         }
         public bool MapState { get; set; }
+        private List<PlayerData> _PlayerDatas = new List<PlayerData>();
+        public List<PlayerData> PlayerDatas
+        {
+            get { return _PlayerDatas; }
+            set { _PlayerDatas = value; }
+        }
     }
 
     public class DrawingPath
@@ -315,5 +335,20 @@ namespace Tempest
         public Tuple<double, double> Offsets { get; set; }
         public string Role { get; set; }
         public string Team { get; set; }
+        public Tuple<double, double>? Position { get; set; }
+    }
+
+    public class TimestampData
+    {
+        public string Title { get; set; }
+        public int Time { get; set; }
+    }
+
+    
+    public class Project
+    {
+        public List<TimestampData> Timestamps { get; set; }
+        public List<string> Tags { get; set; }
+        public List<Drawing> Drawings { get; set; }
     }
 }

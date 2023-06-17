@@ -41,16 +41,23 @@ namespace Tempest
 
         private void SaveDrawing()
         {
-            foreach(var child in SketchWindow.UiState.sketchCanvas.Children)
+            foreach (var child in SketchWindow.UiState.sketchCanvas.Children)
             {
                 if (child is System.Windows.Shapes.Path)
                 {
-                    System.Windows.Shapes.Path test = (System.Windows.Shapes.Path)child;                    
-                    _Drawing.Paths.Add(new DrawingPath() { Data = test.Data.GetFlattenedPathGeometry().ToString(), Stroke = test.Stroke.ToString() });
+                    System.Windows.Shapes.Path path = (System.Windows.Shapes.Path)child;
+                    _Drawing.Paths.Add(new DrawingPath() { Data = path.Data.GetFlattenedPathGeometry().ToString(), Stroke = path.Stroke.ToString() });
+                }
+
+                if (child is Player)
+                {
+                    Player player = (Player)child;
+                    Tuple<double, double> newTuple = new Tuple<double, double>(Canvas.GetLeft(player), Canvas.GetTop(player));
+                    _Drawing.PlayerDatas.Add(new PlayerData() { Offsets = player.data.Offsets, Role = player.data.Role, Team = player.data.Team, Position = newTuple});
                 }
             }
 
-            switch(Services.mapImage.Opacity)
+            switch (Services.mapImage.Opacity)
             {
                 case 0:
                     {
@@ -76,6 +83,12 @@ namespace Tempest
 
             if (_Drawing.MapState) { DrawView._mapToggleButton.IsChecked = true; }
             else { DrawView._mapToggleButton.IsChecked = false; }
+
+            SketchWindow.UiState.ClearPlayers();
+            foreach(PlayerData playerData in _Drawing.PlayerDatas)
+            {
+                Player player = SketchWindow.Create_Player(playerData);
+            }
         }
 
         private void DrawPath(DrawingPath path)

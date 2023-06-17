@@ -24,22 +24,18 @@ namespace Tempest
     /// </summary>
     public partial class Timestamp : UserControl
     {
-
-        private int _time;
-        private string _title;
         public List<string> Tags = new();
         public BindingList<string> AvailableTags = new();
         public TimestampTagPopup Popup;
-        public Timestamp(string title, int time)
+        public TimestampData Data { get; set; }
+        public Timestamp()
         {
             InitializeComponent();
 
-            _title = title;
-            _time = time;
-            TimeSpan parsedTime = TimeSpan.FromSeconds(time);
+            TimeSpan parsedTime = TimeSpan.FromSeconds(Data.Time);
             Popup = new TimestampTagPopup(this);
 
-            titleLabel.Content = _title;
+            titleLabel.Content = Data.Title;
             timeLabel.Content = $"{(int)parsedTime.TotalMinutes}:{parsedTime.Seconds}";
 
             GetTags();
@@ -77,7 +73,7 @@ namespace Tempest
 
         private async void onPlayTimeButtonClick(object sender, RoutedEventArgs e)
         {
-            await Replay.setPosition(_time);
+            await Replay.setPosition(Data.Time);
         }
 
         private void onDeleteButtonClick(object sender, RoutedEventArgs e)

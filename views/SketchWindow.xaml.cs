@@ -51,10 +51,8 @@ namespace Tempest
             mainWindow.Show();
             Create_Map();
 
-            Load_Players();
-
             UiState.sketchCanvas = sketchCanvas;
-
+            Load_Players();
         }
 
         public class UiState : List<UIElement>
@@ -127,6 +125,19 @@ namespace Tempest
                     }
                 }
                 ReloadUI();
+            }
+
+            public static void ClearPlayers()
+            {
+                UIElement[] tempArray = new UIElement[sketchCanvas.Children.Count];
+                sketchCanvas.Children.CopyTo(tempArray, 0);
+                foreach(UIElement child in tempArray)
+                {
+                    if (child is Player)
+                    {
+                        sketchCanvas.Children.Remove(child);
+                    }
+                }
             }
         }
 
@@ -204,18 +215,18 @@ namespace Tempest
             return ward;
         }
 
-        private Player Create_Player(PlayerData data)
+        public static Player Create_Player(PlayerData data)
         {
             Player player = new()
             {
                 Width = 30,
                 Height = 30,
-                canvas = sketchCanvas,
+                canvas = UiState.sketchCanvas,
                 CornerRadius = new CornerRadius(50),
                 data = data
             };
-            sketchCanvas.Children.Add(player);
-            player.ResetPosition();
+            UiState.sketchCanvas.Children.Add(player);
+            player.InitializePosition();
             return player;
         }
 
