@@ -131,6 +131,9 @@ namespace Tempest
         private void TagSetup()
         {
             TextBox nameInput = (TextBox)tempTag.Children[0];
+
+            if (ReplayView.Tags.Contains(nameInput.Text)) { tagContainer.Children.Remove(tempTag); return; }
+
             string name = nameInput.Text;
             tagContainer.Children.Remove(tempTag);
             ReplayView.TagManager.CreateTag(name);
