@@ -149,7 +149,7 @@ namespace Tempest
 
             int totalSeconds = minutes * 60 + seconds;
 
-            string title = titleTextBox.Text.Length != 0 ? titleTextBox.Text : $"Timestamp #{timestampContainer.Children.Count + 1}";
+            string title = titleTextBox.Text.Length != 0 && titleTextBox.Text != titleTextBox.Placeholder ? titleTextBox.Text : $"Timestamp #{timestampContainer.Children.Count + 1}";
 
             timestampContainer.Children.Add(new Timestamp(title, totalSeconds));
 

@@ -141,7 +141,7 @@ namespace Tempest
 
         private void SaveDrawing()
         {
-            string title = DrawingTitleTextBox.Text.Length != 0 ? DrawingTitleTextBox.Text : $"Timestamp #{drawingContainer.Children.Count + 1}";
+            string title = DrawingTitleTextBox.Text.Length != 0 && DrawingTitleTextBox.Text != DrawingTitleTextBox.Placeholder ? DrawingTitleTextBox.Text : $"Drawing #{drawingContainer.Children.Count + 1}";
             drawingContainer.Children.Add(new DrawingComponent() { Title = title });
 
             DrawingTitleTextBox.Text = "";
