@@ -140,7 +140,7 @@ namespace Tempest
             {
                 foreach(string arg in Environment.GetCommandLineArgs())
                 {
-                    if (File.Exists(arg) && arg.Contains("TEMPEST"))
+                    if (File.Exists(arg) && arg.Contains("tempest"))
                     {
                         ProjectHandler.LoadProject(arg);
                     }
@@ -188,7 +188,7 @@ namespace Tempest
         private void SaveProjectButton_Click(object sender, RoutedEventArgs e)
         {
             System.Windows.Forms.SaveFileDialog saveFileDialog = new System.Windows.Forms.SaveFileDialog();
-            saveFileDialog.Filter = "TEMPEST File|*.TEMPEST";
+            saveFileDialog.Filter = "Tempest Project File|*.tempest";
             saveFileDialog.Title = "Save Project";
             saveFileDialog.ShowDialog();
             if (saveFileDialog.FileName != "" )
@@ -209,12 +209,12 @@ namespace Tempest
         {
             using (System.Windows.Forms.OpenFileDialog openFileDialog = new System.Windows.Forms.OpenFileDialog())
             {
-                openFileDialog.Filter = "TEMPEST Files (*.TEMPEST)|*.TEMPEST";
+                openFileDialog.Filter = "Tempest Project Files (*.tempest)|*.tempest";
                 openFileDialog.RestoreDirectory = true;
 
                 openFileDialog.ShowDialog();
 
-                if (openFileDialog.FileName.Contains("TEMPEST"))
+                if (openFileDialog.FileName.Contains("tempest"))
                 {
                     ProjectHandler.LoadProject(openFileDialog.FileName);
                 }
