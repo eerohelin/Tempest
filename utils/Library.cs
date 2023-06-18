@@ -246,6 +246,7 @@ namespace Tempest
 
     public class Drawing
     {
+        public string Title { get; set; }
         private List<DrawingPath> _Paths = new List<DrawingPath>();
         public List<DrawingPath> Paths
         {
@@ -347,8 +348,9 @@ namespace Tempest
     
     public class Project
     {
-        public List<TimestampData> Timestamps { get; set; }
-        public List<string> Tags { get; set; }
-        public List<Drawing> Drawings { get; set; }
+        public List<TimestampData> Timestamps { get; set; } = new();
+        public List<string> Tags { get; set; } = new();
+        public List<Drawing> Drawings { get; set; } = new();
+        public string Name { get; set; }
     }
 }

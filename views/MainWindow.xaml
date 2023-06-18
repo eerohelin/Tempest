@@ -11,7 +11,7 @@
         Title="MainWindow"
         mc:Ignorable="d"
         Topmost="True"
-        Height="600"
+        Height="620"
         Width="220"
         Left="1685"
         Top="10"
@@ -26,25 +26,40 @@
     <Grid Background="#1e232b">
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
+            <RowDefinition Height="20"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <TabControl Background="Transparent" Grid.Row="1" BorderThickness="0">
+        <TabControl Background="Transparent" Grid.Row="2" BorderThickness="0" x:Name="tabControl">
             <!-- REPLAY VIEW -->
             <TabItem Header="Replay" Style="{StaticResource tabItemStyle}">
                 <local:ReplayView>
                 </local:ReplayView>
             </TabItem>
-            
+
             <!-- DRAW VIEW -->
             <TabItem Header="Draw" Style="{StaticResource tabItemStyle}">
                 <local:DrawView>
                 </local:DrawView>
             </TabItem>
         </TabControl>
+
+        <Menu Grid.Row="1">
+            <MenuItem Header="_File">
+                <MenuItem Header="_New" />
+                <MenuItem Header="_Open" Click="OpenProjectButton_Click"/>
+                <MenuItem Header="_Open Recent">
+                    <MenuItem Header="test"/>
+                </MenuItem>
+                <MenuItem Header="_Save" Click="SaveProjectButton_Click"/>
+                <Separator />
+                <MenuItem Header="_Exit" />
+            </MenuItem>
+        </Menu>
+        <TextBox AcceptsReturn="True" />
 
         <!-- APP TITLE BAR -->
         <DockPanel

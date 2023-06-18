@@ -26,14 +26,19 @@ namespace Tempest
     {
         public List<string> Tags = new();
         public BindingList<string> AvailableTags = new();
-        public TimestampTagPopup Popup;
+        public TimestampTagPopup Popup = new();
         public TimestampData Data { get; set; }
         public Timestamp()
         {
             InitializeComponent();
 
+            Loaded += Timestamp_Loaded;
+        }
+
+        private void Timestamp_Loaded(object sender, RoutedEventArgs e)
+        {
             TimeSpan parsedTime = TimeSpan.FromSeconds(Data.Time);
-            Popup = new TimestampTagPopup(this);
+            Popup._owner = this;
 
             titleLabel.Content = Data.Title;
             timeLabel.Content = $"{(int)parsedTime.TotalMinutes}:{parsedTime.Seconds}";
@@ -44,6 +49,7 @@ namespace Tempest
 
         public void AddTag(string tag)
         {
+            if (AvailableTags.Contains(tag)) { return; }
             AvailableTags.Add(tag);
             Popup.CreateTag(tag);
         }

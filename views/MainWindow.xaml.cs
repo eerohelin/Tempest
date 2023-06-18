@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -35,6 +37,14 @@ namespace Tempest
             Loaded += MainWindow_Loaded;
         }
 
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            LeaguePaths.LoadLeagueVersions();
+
+            Dispatcher.BeginInvoke(new Action(CheckArgs), System.Windows.Threading.DispatcherPriority.Background);
+
+        }
+
         public class ProjectHandler
         {
             public static Project? CurrentProject;
@@ -51,6 +61,47 @@ namespace Tempest
                 CurrentProject = tempProject;
             }
 
+            public static void LoadProject(string path)
+            {
+                string stream = File.ReadAllText(path);
+                Project loadedProject = JsonSerializer.Deserialize<Project>(stream);
+                CurrentProject = loadedProject;
+                LoadTimestamps();
+
+                LoadDrawings();
+
+                LoadTags();
+            }
+
+
+            private static void LoadTimestamps()
+            {
+                ReplayView.tsContainer.Children.Clear();
+
+                foreach(TimestampData timestampData in CurrentProject.Timestamps)
+                {
+                    ReplayView.tsContainer.Children.Add(new Timestamp { Data = timestampData });
+                }
+            }
+
+            private static void LoadDrawings()
+            {
+                DrawView._drawingContainer.Children.Clear();
+
+                foreach(Drawing drawing in CurrentProject.Drawings)
+                {
+                    DrawView._drawingContainer.Children.Add(new DrawingComponent() { _Drawing = drawing, Title = drawing.Title});
+                }
+            }
+
+            private static void LoadTags()
+            {
+                foreach(string Tag in CurrentProject.Tags)
+                {
+                    ReplayView.TagManager.CreateTag(Tag);
+                }
+                ReplayView.CurrentTags.Clear();
+            }
 
             private static List<TimestampData> GatherTimestamps()
             {
@@ -82,9 +133,19 @@ namespace Tempest
             }
         }
 
-        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        public static void CheckArgs()
         {
-            LeaguePaths.LoadLeagueVersions();
+
+            if (Environment.GetCommandLineArgs().Count() > 0)
+            {
+                foreach(string arg in Environment.GetCommandLineArgs())
+                {
+                    if (File.Exists(arg) && arg.Contains("TEMPEST"))
+                    {
+                        ProjectHandler.LoadProject(arg);
+                    }
+                }
+            }
         }
 
         private void buttonMinimize_Click(object sender, RoutedEventArgs e)
@@ -122,6 +183,42 @@ namespace Tempest
         private void drawStateUnchecked(object sender, RoutedEventArgs e)
         {
             Owner.Opacity = 0;
+        }
+
+        private void SaveProjectButton_Click(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Forms.SaveFileDialog saveFileDialog = new System.Windows.Forms.SaveFileDialog();
+            saveFileDialog.Filter = "TEMPEST File|*.TEMPEST";
+            saveFileDialog.Title = "Save Project";
+            saveFileDialog.ShowDialog();
+            if (saveFileDialog.FileName != "" )
+            {
+                StreamWriter writer = new StreamWriter(saveFileDialog.OpenFile());
+
+                ProjectHandler.SaveProject();
+                string jsonString = JsonSerializer.Serialize(ProjectHandler.CurrentProject);
+
+                writer.WriteLine(jsonString);
+
+                writer.Dispose();
+                writer.Close();
+            }
+        }
+
+        private void OpenProjectButton_Click(object sender, RoutedEventArgs e)
+        {
+            using (System.Windows.Forms.OpenFileDialog openFileDialog = new System.Windows.Forms.OpenFileDialog())
+            {
+                openFileDialog.Filter = "TEMPEST Files (*.TEMPEST)|*.TEMPEST";
+                openFileDialog.RestoreDirectory = true;
+
+                openFileDialog.ShowDialog();
+
+                if (openFileDialog.FileName.Contains("TEMPEST"))
+                {
+                    ProjectHandler.LoadProject(openFileDialog.FileName);
+                }
+            }
         }
     }
 }

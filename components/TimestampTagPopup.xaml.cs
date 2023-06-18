@@ -24,14 +24,12 @@ namespace Tempest
     public partial class TimestampTagPopup : Popup
     {
 
-        private Timestamp _owner { get; set; }
+        public Timestamp _owner { get; set; }
         private StackPanel tempTag = new();
 
-        public TimestampTagPopup(Timestamp owner)
+        public TimestampTagPopup()
         {
             InitializeComponent();
-
-            _owner = owner;
         }
 
 

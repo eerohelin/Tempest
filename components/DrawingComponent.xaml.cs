@@ -35,8 +35,11 @@ namespace Tempest
         private void DrawingComponent_Loaded(object sender, RoutedEventArgs e)
         {
             titleLabel.Content = Title;
-            _Drawing = new Drawing();
-            SaveDrawing();
+            if (_Drawing == null)
+            {
+                _Drawing = new Drawing();
+                SaveDrawing();
+            }
         }
 
         private void SaveDrawing()
@@ -70,6 +73,7 @@ namespace Tempest
                         break;
                     }
             }
+            _Drawing.Title = Title;
             
         }
 
