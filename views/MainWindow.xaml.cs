@@ -62,6 +62,29 @@ namespace Tempest
                 CurrentProject = tempProject;
             }
 
+            public static void NewProject()
+            {
+                System.Windows.Forms.SaveFileDialog saveFileDialog = new System.Windows.Forms.SaveFileDialog();
+                saveFileDialog.Filter = "Tempest Project File|*.tempest";
+                saveFileDialog.Title = "Create New Project";
+                saveFileDialog.ShowDialog();
+                if (saveFileDialog.FileName != "")
+                {
+                    StreamWriter writer = new StreamWriter(saveFileDialog.OpenFile());
+
+                    CurrentProject = new Project() { Path = saveFileDialog.FileName};
+                    string jsonString = JsonSerializer.Serialize(ProjectHandler.CurrentProject);
+
+                    writer.WriteLine(jsonString);
+
+                    writer.Dispose();
+                    writer.Close();
+                    LoadProject(saveFileDialog.FileName);
+                }
+
+               
+            }
+
             public static void LoadProject(string path)
             {
                 string stream = File.ReadAllText(path);
@@ -201,9 +224,10 @@ namespace Tempest
                 writer.Close();
                 return;
             }
+
             System.Windows.Forms.SaveFileDialog saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             saveFileDialog.Filter = "Tempest Project File|*.tempest";
-            saveFileDialog.Title = "Save Project";
+            saveFileDialog.Title = "Save New Project";
             saveFileDialog.ShowDialog();
             if (saveFileDialog.FileName != "")
             {
@@ -217,6 +241,7 @@ namespace Tempest
                 writer.Dispose();
                 writer.Close();
             }
+
         }
 
         private void OpenProjectButton_Click(object sender, RoutedEventArgs e)
@@ -233,6 +258,11 @@ namespace Tempest
                     ProjectHandler.LoadProject(openFileDialog.FileName);
                 }
             }
+        }
+
+        private void NewProjectButton_Click(object sender, RoutedEventArgs e)
+        {
+            ProjectHandler.NewProject();
         }
     }
 }

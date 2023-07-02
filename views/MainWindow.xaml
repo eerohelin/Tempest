@@ -49,7 +49,7 @@
 
         <Menu Grid.Row="1">
             <MenuItem Header="_File">
-                <MenuItem Header="_New" />
+                <MenuItem Header="_New" Click="NewProjectButton_Click"/>
                 <MenuItem Header="_Open" Click="OpenProjectButton_Click"/>
                 <MenuItem Header="_Open Recent">
                     <MenuItem Header="test"/>
