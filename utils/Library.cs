@@ -352,5 +352,6 @@ namespace Tempest
         public List<string> Tags { get; set; } = new();
         public List<Drawing> Drawings { get; set; } = new();
         public string Name { get; set; }
+        public string Path { get; set; }
     }
 }

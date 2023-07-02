@@ -49,13 +49,14 @@ namespace Tempest
         {
             public static Project? CurrentProject;
 
-            public static void SaveProject()
+            public static void SaveProject(string path)
             {
                 Project tempProject = new Project()
                 {
                     Timestamps = GatherTimestamps(),
                     Tags = GatherTags(),
-                    Drawings = GatherDrawings()
+                    Drawings = GatherDrawings(),
+                    Path = path
                 };
 
                 CurrentProject = tempProject;
@@ -187,15 +188,28 @@ namespace Tempest
 
         private void SaveProjectButton_Click(object sender, RoutedEventArgs e)
         {
+            if (ProjectHandler.CurrentProject != null)
+            {
+                StreamWriter writer = new StreamWriter(ProjectHandler.CurrentProject.Path);
+
+                ProjectHandler.SaveProject(ProjectHandler.CurrentProject.Path);
+                string jsonString = JsonSerializer.Serialize(ProjectHandler.CurrentProject);
+
+                writer.WriteLine(jsonString);
+
+                writer.Dispose();
+                writer.Close();
+                return;
+            }
             System.Windows.Forms.SaveFileDialog saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             saveFileDialog.Filter = "Tempest Project File|*.tempest";
             saveFileDialog.Title = "Save Project";
             saveFileDialog.ShowDialog();
-            if (saveFileDialog.FileName != "" )
+            if (saveFileDialog.FileName != "")
             {
                 StreamWriter writer = new StreamWriter(saveFileDialog.OpenFile());
 
-                ProjectHandler.SaveProject();
+                ProjectHandler.SaveProject(saveFileDialog.FileName);
                 string jsonString = JsonSerializer.Serialize(ProjectHandler.CurrentProject);
 
                 writer.WriteLine(jsonString);
