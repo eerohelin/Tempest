@@ -64,25 +64,9 @@ namespace Tempest
 
             public static void NewProject()
             {
-                System.Windows.Forms.SaveFileDialog saveFileDialog = new System.Windows.Forms.SaveFileDialog();
-                saveFileDialog.Filter = "Tempest Project File|*.tempest";
-                saveFileDialog.Title = "Create New Project";
-                saveFileDialog.ShowDialog();
-                if (saveFileDialog.FileName != "")
-                {
-                    StreamWriter writer = new StreamWriter(saveFileDialog.OpenFile());
-
-                    CurrentProject = new Project() { Path = saveFileDialog.FileName};
-                    string jsonString = JsonSerializer.Serialize(ProjectHandler.CurrentProject);
-
-                    writer.WriteLine(jsonString);
-
-                    writer.Dispose();
-                    writer.Close();
-                    LoadProject(saveFileDialog.FileName);
-                }
-
-               
+                CurrentProject = null;
+                ReplayView.CurrentTags.Clear();
+                ReplayView.tsContainer.Children.Clear();
             }
 
             public static void LoadProject(string path)
