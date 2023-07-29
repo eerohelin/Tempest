@@ -47,19 +47,17 @@
             </TabItem>
         </TabControl>
 
-        <Menu Grid.Row="1">
-            <MenuItem Header="_File">
-                <MenuItem Header="_New" Click="NewProjectButton_Click"/>
-                <MenuItem Header="_Open" Click="OpenProjectButton_Click"/>
-                <MenuItem Header="_Open Recent">
-                    <MenuItem Header="test"/>
+        <Menu Grid.Row="1" Background="#1e232b">
+            <MenuItem Header="_File" Foreground="WhiteSmoke">
+                <MenuItem Header="_New" Click="NewProjectButton_Click" Foreground="Black"/>
+                <MenuItem Header="_Open" Click="OpenProjectButton_Click" Foreground="Black"/>
+                <MenuItem Header="_Open Recent" x:Name="OpenRecentMenu" Foreground="Black">
+                    <MenuItem Header="Clear" Click="ClearRecentProjects_Click" StaysOpenOnClick="True"/>
+                    <Separator/>
                 </MenuItem>
-                <MenuItem Header="_Save" Click="SaveProjectButton_Click"/>
-                <Separator />
-                <MenuItem Header="_Exit" />
+                <MenuItem Header="_Save" Click="SaveProjectButton_Click" Foreground="Black"/>
             </MenuItem>
         </Menu>
-        <TextBox AcceptsReturn="True" />
 
         <!-- APP TITLE BAR -->
         <DockPanel

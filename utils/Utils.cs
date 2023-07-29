@@ -149,6 +149,7 @@ namespace Tempest
                 var versionInfo = FileVersionInfo.GetVersionInfo(location);
                 string version = versionInfo.FileVersion ?? throw new ArgumentException();
                 string parsedLeagueVersion = $"{version.Split(".")[0]}.{version.Split(".")[1]}";
+                if(Services.leagueVersions.ContainsKey(parsedLeagueVersion)) { return; };
                 Services.leagueVersions.Add(parsedLeagueVersion, location);
             }
         }

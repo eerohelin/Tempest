@@ -24,6 +24,8 @@ namespace Tempest
     /// </summary>
     public partial class MainWindow : Window
     {
+
+        public static MenuItem openRecentMenu = new();
         public MainWindow()
         {
             InitializeComponent();
@@ -43,6 +45,9 @@ namespace Tempest
 
             Dispatcher.BeginInvoke(new Action(CheckArgs), System.Windows.Threading.DispatcherPriority.Background);
 
+            openRecentMenu = OpenRecentMenu;
+            LoadRecentProjects();
+
         }
 
         public class ProjectHandler
@@ -60,6 +65,8 @@ namespace Tempest
                 };
 
                 CurrentProject = tempProject;
+
+                SaveToRecentProjects(path);
             }
 
             public static void NewProject()
@@ -79,6 +86,8 @@ namespace Tempest
                 LoadDrawings();
 
                 LoadTags();
+
+                SaveToRecentProjects(path);
             }
 
 
@@ -138,6 +147,25 @@ namespace Tempest
                 }
                 
                 return tempList;
+            }
+
+            private static void SaveToRecentProjects(string path)
+            {
+                if (properties.Settings.Default.past_projects.Count > 10)
+                {
+                    properties.Settings.Default.past_projects.RemoveAt(0);
+                }
+                if (properties.Settings.Default.past_projects.Contains(path))
+                {
+                    properties.Settings.Default.past_projects.Remove(path);
+                    properties.Settings.Default.past_projects.Add(path);
+                }
+                else
+                {
+                    properties.Settings.Default.past_projects.Add(path);
+                }
+                LoadRecentProjects();
+                properties.Settings.Default.Save();
             }
         }
 
@@ -247,6 +275,60 @@ namespace Tempest
         private void NewProjectButton_Click(object sender, RoutedEventArgs e)
         {
             ProjectHandler.NewProject();
+        }
+
+        private void ClearRecentProjects_Click(object sender, RoutedEventArgs e)
+        {
+            properties.Settings.Default.past_projects.Clear();
+            properties.Settings.Default.Save();
+
+            LoadRecentProjects();
+        }
+
+        public static void LoadRecentProjects()
+        {
+            if (properties.Settings.Default.past_projects.Count == 0)
+            {
+                ClearRecentProjectsMenu();
+                return;
+            }
+            StringCollection pastProjects = properties.Settings.Default.past_projects;
+            int limiter = 0;
+            ClearRecentProjectsMenu();
+            for (int i = pastProjects.Count - 1; i >= 0; i--)
+            {
+                if (limiter >= 10) { break; }
+                AddRecentProjectToMenu(pastProjects[i]);
+                limiter++;
+            }
+        }
+
+        private static void AddRecentProjectToMenu(string path)
+        {
+            MenuItem item = new MenuItem() { Header = path, Foreground = Brushes.Black };
+            item.Click += RecentProject_Click;
+            openRecentMenu.Items.Add(item);
+        }
+
+        private static void ClearRecentProjectsMenu()
+        {
+            List<MenuItem> tempList = new();
+            foreach (UIElement item in openRecentMenu.Items)
+            {
+                if (item is not MenuItem) { continue; }
+                tempList.Add((MenuItem)item);
+            }
+            foreach(MenuItem item in tempList)
+            {
+                if (item.Header.ToString() == "Clear") { continue; }
+                openRecentMenu.Items.Remove(item);
+            }
+        }
+
+        private static void RecentProject_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem item = (MenuItem)sender;
+            ProjectHandler.LoadProject(item.Header.ToString());
         }
     }
 }
