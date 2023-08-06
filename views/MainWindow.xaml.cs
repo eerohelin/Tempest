@@ -188,7 +188,7 @@ namespace Tempest
         {
             if(Height == 30)
             {
-                Height = 600;
+                Height = 620;
             }
             else
             {

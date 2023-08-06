@@ -174,5 +174,10 @@ namespace Tempest
                 SaveDrawing();
             }
         }
+
+        private void ThicknessValue_Changed(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            Services.brushSize = e.NewValue;
+        }
     }
 }
