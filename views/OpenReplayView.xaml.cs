@@ -18,6 +18,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Tempest.components;
 using static System.Net.WebRequestMethods;
 
 namespace Tempest
@@ -29,10 +30,12 @@ namespace Tempest
     {
 
         public ReplayView _parent;
+        private readonly ReplaySearchPopup _searchPopup;
         public OpenReplayView(ReplayView parent)
         {
             InitializeComponent();
             _parent = parent;
+            _searchPopup = new ReplaySearchPopup();
 
             Loaded += OpenReplayView_Loaded;
 
@@ -58,12 +61,21 @@ namespace Tempest
 
             var orderedPaths = replayPaths.OrderByDescending(d => new FileInfo(d).CreationTime);
 
+            Task.Run(() => ReplayComponent(orderedPaths));
+        }
+
+        private void ReplayComponent(IOrderedEnumerable<string> orderedPaths)
+        {
             foreach (string replay in orderedPaths)
             {
+
                 ReplayObject replayObject = ROFLHandler.ParseROFL(replay);
-                if (replayObject is null) { continue; }
-                ReplayComponent replayComponent = new(replayObject, replay, this);
-                replayContainer.Children.Add(replayComponent);
+                if (replayObject is null) { return; }
+                Application.Current.Dispatcher.Invoke((Action)delegate
+                {
+                    ReplayComponent replayComponent = new(replayObject, replay, this);
+                    replayContainer.Children.Add(replayComponent);
+                });
             }
         }
 
@@ -73,6 +85,23 @@ namespace Tempest
             {
                 replayComponent.CheckLeagueVersion();
             }
+        }
+
+        private void FilterButton_Click(object sender, RoutedEventArgs e)
+        {
+            Button button = (Button)sender;
+            _searchPopup.PlacementTarget = button;
+            _searchPopup.IsOpen = true;
+        }
+
+        private void buttonClose_click(object sender, RoutedEventArgs e)
+        {
+            Hide();
+        }
+        private void appBar_drag(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+                DragMove();
         }
     }
 }

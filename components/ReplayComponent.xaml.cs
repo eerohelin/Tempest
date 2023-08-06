@@ -37,6 +37,8 @@ namespace Tempest
             Loaded += ReplayComponent_Loaded;
         }
 
+        public ReplayObject GetReplayObject() { return _replay; }
+
         private void ReplayComponent_Loaded(object sender, RoutedEventArgs e)
         {
             foreach(Summoner summoner in _replay.statsJson)

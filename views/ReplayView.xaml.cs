@@ -33,11 +33,12 @@ namespace Tempest
         public static StackPanel tsContainer = new();
         public static TagFilterPopup tagFilterPopup = new();
         public Dictionary<string, BitmapImage> championImageCache = new();
+        private readonly OpenReplayView _openReplayView;
 
         public ReplayView()
         {
             InitializeComponent();
-
+            _openReplayView = new OpenReplayView(this);
             //timestampContainer.Children.Add(new Timestamp("Test1", 500)); Example Timestamp
 
             Loaded += ReplayWindow_loaded;
@@ -189,8 +190,7 @@ namespace Tempest
 
         private void onOpenReplayButtonClick(object sender, RoutedEventArgs e)
         {
-            OpenReplayView replayView = new(this);
-            replayView.ShowDialog();
+            _openReplayView.ShowDialog();
         }
     }
 }

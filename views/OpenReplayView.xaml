@@ -6,12 +6,84 @@
         xmlns:local="clr-namespace:Tempest"
         mc:Ignorable="d"
         Topmost="True"
+        WindowStyle="None"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
         Title="Replay Selector" Height="530" Width="300">
-    <ScrollViewer>
-        <StackPanel x:Name="replayContainer">
-        
-        </StackPanel>
-    </ScrollViewer>
+
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="0"/>
+    </WindowChrome.WindowChrome>
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Orientation="Horizontal">
+                <local:PlaceholderTextBox x:Name="titleTextBox"
+                         Style="{StaticResource textBoxStyle}"
+                        Width="200"
+                         Placeholder="Search">
+                </local:PlaceholderTextBox>
+                <Button Click="FilterButton_Click">Filters</Button>
+            </StackPanel>
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
+                <StackPanel x:Name="replayContainer" Orientation="Vertical">
+
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+
+        <DockPanel
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Center"
+            Background="Transparent"
+            MouseDown="appBar_drag"
+        >
+            <Image
+                Source="/assets/icon.png"
+                Margin="6,5,1,3"
+                Height="20"
+                Width="20"
+            >
+            </Image>
+            <TextBlock
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Center"
+                Foreground="WhiteSmoke"
+                Margin="5,2,0,3"
+                Grid.Column="0"
+                Text="Replay Files"
+                FontSize="16"
+            >
+            </TextBlock>
+            <StackPanel
+                HorizontalAlignment="Right"
+                Orientation="Horizontal"
+                Margin="0,2,5,2"
+            >
+                <Button
+                    Style="{StaticResource closeButtonStyle}"
+                    Click="buttonClose_click"
+                    x:Name="buttonClose"
+                    Content="X"
+                >
+                </Button>
+            </StackPanel>
+        </DockPanel>
+    </Grid>
 </Window>

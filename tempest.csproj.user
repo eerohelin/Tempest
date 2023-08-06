@@ -13,6 +13,9 @@
     <Compile Update="components\ReplayComponent.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="components\ReplaySearchPopup.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="views\DrawView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -52,6 +55,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="components\ReplayComponent.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="components\ReplaySearchPopup.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="views\DrawView.xaml">
