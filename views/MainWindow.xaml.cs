@@ -183,8 +183,6 @@ namespace Tempest
             private static Dictionary<string, Champion> _championData = new();
 
             private static int LoadedCounter = 0;
-            private static int loadingBatchSize = 8;
-            private static int loadingCurrentIndex = 0;
 
             public static void Load()
             {
@@ -196,7 +194,7 @@ namespace Tempest
                         LoadingAssetsWindow _loadingWindow = new();
 
                         _championData = LoadChampionData();
-                        _loadingWindow._progressBar.Maximum = _championData.Count;
+                        _loadingWindow.Initialize(_championData.Count);
 
                         Directory.CreateDirectory(_cacheFolderPath);
 
@@ -209,7 +207,7 @@ namespace Tempest
                                 if (File.Exists(cachedImagePath) && !_championImageCache.ContainsKey(champion.key.ToLower()))
                                 {
                                     _championImageCache.Add(champion.key.ToLower(), LoadImageFromFile(cachedImagePath));
-                                    _loadingWindow._progressBar.Value++;
+                                    _loadingWindow.LoadingProgress++;
                                     Interlocked.Increment(ref LoadedCounter);
                                     continue;
                                 }
@@ -217,14 +215,6 @@ namespace Tempest
                                 _loadingWindow.Show();
 
                                 await GetImage(champion, _loadingWindow);
-                                loadingCurrentIndex++;
-                                Interlocked.Increment(ref loadingCurrentIndex);
-                                //if (loadingCurrentIndex >= loadingBatchSize)
-                                //{
-                                //    await Task.Delay(2000);
-                                //    loadingBatchSize = 0;
-                                //    continue;
-                                //}
                             }
                             await Task.Delay(1000);
                         }
@@ -256,7 +246,7 @@ namespace Tempest
                     if (_championImageCache.ContainsKey(champion.key.ToLower())) { return; }
                     _championImageCache.Add(champion.key.ToLower(), image);
                     LoadedCounter++;
-                    window._progressBar.Value++;
+                    window.LoadingProgress++;
                 };
             }
 

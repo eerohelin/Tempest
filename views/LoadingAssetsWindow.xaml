@@ -10,5 +10,6 @@
     <StackPanel>
         <Label HorizontalAlignment="Center">Loading Assets..</Label>
         <ProgressBar x:Name="AssetProgressBar" Minimum="0" Height="30"/>
+        <Label HorizontalAlignment="Center" x:Name="ProgressLabel"></Label>
     </StackPanel>
 </Window>

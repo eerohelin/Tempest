@@ -21,6 +21,8 @@ namespace Tempest
     {
 
         public ProgressBar _progressBar;
+        private int _loadingProgress = 0;
+        private int _maximumProgress;
         public bool _isLoading = true;
         public LoadingAssetsWindow()
         {
@@ -31,6 +33,26 @@ namespace Tempest
             Closing += LoadingAssetsWindow_Closing;
         }
 
+        public int LoadingProgress
+        {
+            get { return _loadingProgress; }
+            set { _loadingProgress = value; UpdateValues(); }
+        }
+
+        private void UpdateValues()
+        {
+            _progressBar.Value = _loadingProgress;
+
+            ProgressLabel.Content = $"{_loadingProgress}/{_maximumProgress}";
+        }
+
+        public void Initialize(int maximum)
+        {
+            _maximumProgress = maximum;
+            _progressBar.Maximum = maximum; 
+
+            ProgressLabel.Content = "0/" + maximum.ToString();
+        }
         private void LoadingAssetsWindow_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
         {
            if (_isLoading) { e.Cancel = true; return; }
