@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Tempest.components
+namespace Tempest
 {
     /// <summary>
     /// Interaction logic for ReplaySearchPopup.xaml

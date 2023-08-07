@@ -354,4 +354,14 @@ namespace Tempest
         public string Name { get; set; }
         public string Path { get; set; }
     }
+
+    public class Champion
+    {
+        public int id { get; set; }
+        public string key { get; set; }
+        public string name { get; set; }
+        public string icon { get; set; }
+    }
+
+
 }

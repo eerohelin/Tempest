@@ -1,8 +1,13 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
@@ -32,7 +37,6 @@ namespace Tempest
         public static BindingList<string> Tags = new();
         public static StackPanel tsContainer = new();
         public static TagFilterPopup tagFilterPopup = new();
-        public Dictionary<string, BitmapImage> championImageCache = new();
         private readonly OpenReplayView _openReplayView;
 
         public ReplayView()

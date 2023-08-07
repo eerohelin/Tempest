@@ -4,11 +4,14 @@ using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Ribbon;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -47,6 +50,8 @@ namespace Tempest
 
             openRecentMenu = OpenRecentMenu;
             LoadRecentProjects();
+
+            ChampionImageCacheHandler.Load();
 
         }
 
@@ -167,6 +172,144 @@ namespace Tempest
                 LoadRecentProjects();
                 properties.Settings.Default.Save();
             }
+        }
+
+        public class ChampionImageCacheHandler
+        {
+            private static readonly string _cacheFolderPath = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Tempest", "Cache");
+
+            private static Dictionary<string, BitmapImage> _championImageCache = new();
+
+            private static Dictionary<string, Champion> _championData = new();
+
+            private static int LoadedCounter = 0;
+            private static int loadingBatchSize = 8;
+            private static int loadingCurrentIndex = 0;
+
+            public static void Load()
+            {
+                
+                Task.Run(() =>
+                {
+                    Application.Current.Dispatcher.Invoke(async () =>
+                    {
+                        LoadingAssetsWindow _loadingWindow = new();
+
+                        _championData = LoadChampionData();
+                        _loadingWindow._progressBar.Maximum = _championData.Count;
+
+                        Directory.CreateDirectory(_cacheFolderPath);
+
+
+                        while (LoadedCounter < _championData.Count)
+                        {
+                            foreach (Champion champion in _championData.Values)
+                            {
+                                string cachedImagePath = System.IO.Path.Combine(_cacheFolderPath, champion.key.ToLower() + ".png");
+                                if (File.Exists(cachedImagePath) && !_championImageCache.ContainsKey(champion.key.ToLower()))
+                                {
+                                    _championImageCache.Add(champion.key.ToLower(), LoadImageFromFile(cachedImagePath));
+                                    _loadingWindow._progressBar.Value++;
+                                    Interlocked.Increment(ref LoadedCounter);
+                                    continue;
+                                }
+
+                                _loadingWindow.Show();
+
+                                await GetImage(champion, _loadingWindow);
+                                loadingCurrentIndex++;
+                                Interlocked.Increment(ref loadingCurrentIndex);
+                                //if (loadingCurrentIndex >= loadingBatchSize)
+                                //{
+                                //    await Task.Delay(2000);
+                                //    loadingBatchSize = 0;
+                                //    continue;
+                                //}
+                            }
+                            await Task.Delay(1000);
+                        }
+
+                        _loadingWindow._isLoading = false;
+                        _loadingWindow.Close();
+                    });
+                    
+                });
+                
+            }
+
+            public static Dictionary<string, Champion> GetChampionData()
+            {
+                return _championData;
+            }
+
+            public static BitmapImage GetChampionBitmap(string championName)
+            {
+                return _championImageCache[championName];
+            }
+
+            public static async Task GetImage(Champion champion, LoadingAssetsWindow window)
+            {
+                BitmapImage image = await LoadChampionImage(champion);
+                image.DownloadCompleted += (x, y) =>
+                {
+                    SaveImageToFile(image, champion.key.ToLower());
+                    if (_championImageCache.ContainsKey(champion.key.ToLower())) { return; }
+                    _championImageCache.Add(champion.key.ToLower(), image);
+                    LoadedCounter++;
+                    window._progressBar.Value++;
+                };
+            }
+
+            private static void SaveImageToFile(BitmapImage image, string fileName)
+            {
+                BitmapEncoder encoder = new PngBitmapEncoder();
+                encoder.Frames.Add(BitmapFrame.Create(image));
+
+                using (var fileStream = new System.IO.FileStream(System.IO.Path.Combine(_cacheFolderPath, fileName + ".png"), System.IO.FileMode.Create))
+                {
+                    encoder.Save(fileStream);
+                }
+            }
+
+            private static BitmapImage LoadImageFromFile(string imagePath)
+            {
+                BitmapImage bitmap = new BitmapImage();
+                using (FileStream stream = new FileStream(imagePath, FileMode.Open, FileAccess.Read))
+                {
+                    bitmap.BeginInit();
+                    bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                    bitmap.StreamSource = stream;
+                    bitmap.EndInit();
+                }
+                return bitmap;
+            }
+
+            private static async Task<BitmapImage> LoadChampionImage(Champion champion)
+            {
+                var fullFilePath = champion.icon;
+
+                BitmapImage bitmap = new BitmapImage();
+
+                bitmap.BeginInit();
+                bitmap.UriSource = new Uri(fullFilePath, UriKind.Absolute);
+                bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                bitmap.EndInit();
+
+
+                return bitmap;
+            }
+
+            private static Dictionary<string, Champion> LoadChampionData()
+            {
+                // https://cdn.merakianalytics.com/riot/lol/resources/latest/en-US/champions.json
+
+                using (WebClient wc = new WebClient())
+                {
+                    var json = wc.DownloadString("https://cdn.merakianalytics.com/riot/lol/resources/latest/en-US/champions.json");
+                    return JsonSerializer.Deserialize<Dictionary<string, Champion>>(json)!;
+                }
+            }
+
         }
 
         public static void CheckArgs()

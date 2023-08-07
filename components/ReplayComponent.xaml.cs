@@ -43,26 +43,7 @@ namespace Tempest
         {
             foreach(Summoner summoner in _replay.statsJson)
             {
-                Image championImage = CreateImage();
-                if (_owner._parent.championImageCache.ContainsKey(summoner.SKIN))
-                {
-                    if (_owner._parent.championImageCache[summoner.SKIN].IsDownloading)
-                    {
-                        _owner._parent.championImageCache[summoner.SKIN].DownloadCompleted += (x, y) => { championImage.Source = _owner._parent.championImageCache[summoner.SKIN]; };
-                        playerContainer.Children.Add(championImage);
-                    } else
-                    {
-                        playerContainer.Children.Add(CreateImage(_owner._parent.championImageCache[summoner.SKIN]));
-                    }
-                }
-                else
-                {
-                    BitmapImage championBitmap = LoadChampionImage(summoner.SKIN, championImage);
-                    _owner._parent.championImageCache.Add(summoner.SKIN, championBitmap);
-
-                    playerContainer.Children.Add(championImage);
-                }
-                championImage.ToolTip = summoner.SKIN;
+                LoadImage(summoner);
             }
 
             var parsedROFLVersion = _replay.gameVersion.ToString().Split('.').Take(2);
@@ -73,6 +54,14 @@ namespace Tempest
             ROFLVersion.Content = _roflVersion;
 
             CheckLeagueVersion();
+        }
+
+        private void LoadImage(Summoner summoner)
+        {
+            Image championImage = CreateImage();
+            championImage.ToolTip = summoner.SKIN;
+            championImage.Source = MainWindow.ChampionImageCacheHandler.GetChampionBitmap(summoner.SKIN.ToLower());
+            playerContainer.Children.Add(championImage);
         }
 
         public void CheckLeagueVersion()
@@ -116,34 +105,6 @@ namespace Tempest
             image.Height = 40;
 
             return image;
-        }
-
-        private BitmapImage LoadChampionImage(string ChampionName, Image image)
-        {
-            var fullFilePath = $"https://cdn.communitydragon.org/latest/champion/{ChampionName}/square";
-
-
-            BitmapImage bitmap = new BitmapImage();
-
-            bitmap.DownloadCompleted += (x, y) => Bitmap_DownloadCompleted(x, y, image, bitmap);
-            bitmap.DownloadFailed += Bitmap_DownloadFailed;
-
-            bitmap.BeginInit();
-            bitmap.UriSource = new Uri(fullFilePath, UriKind.Absolute);
-            bitmap.CacheOption = BitmapCacheOption.OnLoad;
-            bitmap.EndInit();
-
-            return bitmap;
-        }
-
-        private void Bitmap_DownloadFailed(object? sender, ExceptionEventArgs e)
-        {
-            // pass
-        }
-
-        private void Bitmap_DownloadCompleted(object? sender, EventArgs e, Image image, BitmapImage bitmap)
-        {
-            image.Source = bitmap;
         }
 
         private void PlayReplayButton_Clicked(object sender, RoutedEventArgs e)
