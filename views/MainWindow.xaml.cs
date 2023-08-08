@@ -44,14 +44,11 @@ namespace Tempest
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            LeaguePaths.LoadLeagueVersions();
 
             Dispatcher.BeginInvoke(new Action(CheckArgs), System.Windows.Threading.DispatcherPriority.Background);
 
             openRecentMenu = OpenRecentMenu;
             LoadRecentProjects();
-
-            ChampionImageCacheHandler.Load();
 
         }
 
@@ -187,7 +184,7 @@ namespace Tempest
             public static void Load()
             {
                 
-                Task.Run(() =>
+                Task task = Task.Run(() =>
                 {
                     Application.Current.Dispatcher.Invoke(async () =>
                     {
@@ -222,9 +219,41 @@ namespace Tempest
                         _loadingWindow._isLoading = false;
                         _loadingWindow.Close();
                     });
-                    
                 });
-                
+
+            }
+
+            public static async Task LoadAsync()
+            {
+                LoadingAssetsWindow _loadingWindow = new();
+
+                _championData = LoadChampionData();
+                _loadingWindow.Initialize(_championData.Count);
+
+                Directory.CreateDirectory(_cacheFolderPath);
+
+                while (LoadedCounter < _championData.Count)
+                {
+                    foreach (Champion champion in _championData.Values)
+                    {
+                        string cachedImagePath = System.IO.Path.Combine(_cacheFolderPath, champion.key.ToLower() + ".png");
+                        if (File.Exists(cachedImagePath) && !_championImageCache.ContainsKey(champion.key.ToLower()))
+                        {
+                            _championImageCache.Add(champion.key.ToLower(), LoadImageFromFile(cachedImagePath));
+                            _loadingWindow.LoadingProgress++;
+                            Interlocked.Increment(ref LoadedCounter);
+                            continue;
+                        }
+
+                        _loadingWindow.Show();
+
+                        await GetImage(champion, _loadingWindow);
+                    }
+                    await Task.Delay(1000);
+                }
+
+                _loadingWindow._isLoading = false;
+                _loadingWindow.Close();
             }
 
             public static Dictionary<string, Champion> GetChampionData()

@@ -42,12 +42,13 @@ namespace Tempest
             Services.ToolChanged += Services_ToolChanged;
         }
 
-        private void SketchWindow_Loaded(object sender, RoutedEventArgs e)
+        private async void SketchWindow_Loaded(object sender, RoutedEventArgs e)
         {
             MainWindow mainWindow = new()
             {
                 Owner = this
             };
+            await MainWindow.ChampionImageCacheHandler.LoadAsync();
             mainWindow.Show();
             Create_Map();
 
