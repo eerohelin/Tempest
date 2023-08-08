@@ -49,7 +49,7 @@ namespace Tempest
 
             openRecentMenu = OpenRecentMenu;
             LoadRecentProjects();
-
+            LeaguePaths.LoadLeagueVersions();
         }
 
         public class ProjectHandler
@@ -226,7 +226,7 @@ namespace Tempest
             public static async Task LoadAsync()
             {
                 LoadingAssetsWindow _loadingWindow = new();
-
+                bool needDownload = false;
                 _championData = LoadChampionData();
                 _loadingWindow.Initialize(_championData.Count);
 
@@ -244,12 +244,13 @@ namespace Tempest
                             Interlocked.Increment(ref LoadedCounter);
                             continue;
                         }
-
+                        needDownload = true;
                         _loadingWindow.Show();
 
                         await GetImage(champion, _loadingWindow);
                     }
-                    await Task.Delay(1000);
+
+                    if (needDownload) { await Task.Delay(500); }
                 }
 
                 _loadingWindow._isLoading = false;
